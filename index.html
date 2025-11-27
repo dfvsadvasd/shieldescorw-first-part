@@ -25,21 +25,36 @@
         /* LUXURY THEME OVERRIDES */
         /* DEFAULT IS NOW LIGHT THEME */
         :root {
-            --bg-color: #f4f4f5;
-            --text-color: #18181b;
-            --text-muted: #52525b;
-            --panel-bg: rgba(255, 255, 255, 0.85);
-            --panel-border: rgba(0, 0, 0, 0.1);
-            --input-bg: rgba(0, 0, 0, 0.05);
+            --bg-color: #f8fafc;
+            --text-color: #0f172a;
+            --text-muted: #64748b;
+            
+            /* Glass Card Vars (Light) */
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            --glass-blur: blur(24px);
+            
+            /* Premium Auth Glass (Light) */
+            --auth-glass-bg: rgba(255, 255, 255, 0.1);
+            --auth-glass-border: rgba(0, 0, 0, 0.05);
+            --auth-glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+
+            --input-bg: rgba(255, 255, 255, 0.6);
             --input-border: rgba(0, 0, 0, 0.1);
-            --accent-glow: rgba(0, 0, 0, 0.1);
-            --btn-bg: #18181b;
+            --accent-glow: rgba(0, 0, 0, 0.05);
+            
+            --btn-bg: #0f172a;
             --btn-text: #ffffff;
             --dropdown-bg: #ffffff;
             --scrollbar-track: #f0f0f0;
             --scrollbar-thumb: #ccc;
-            --toggle-icon: #18181b;
-            --address-color: rgba(0,0,0,0.15);
+            --toggle-icon: #0f172a;
+
+            /* Ticker Colors (Light) */
+            --ticker-bg: rgba(255, 255, 255, 0.8);
+            --ticker-border: rgba(15, 23, 42, 0.1);
+            --ticker-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
         }
 
         /* DARK THEME OVERRIDES */
@@ -47,22 +62,37 @@
             --bg-color: #050505;
             --text-color: #f5f5f5;
             --text-muted: #a3a3a3;
-            --panel-bg: rgba(20, 20, 20, 0.6);
-            --panel-border: rgba(255, 255, 255, 0.08);
+
+            /* Glass Card Vars (Dark) */
+            --glass-bg: rgba(20, 20, 20, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --glass-blur: blur(30px);
+
+            /* Premium Auth Glass (Dark) */
+            --auth-glass-bg: rgba(255, 255, 255, 0.02);
+            --auth-glass-border: rgba(255, 255, 255, 0.1);
+            --auth-glass-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+
             --input-bg: rgba(255, 255, 255, 0.03);
             --input-border: rgba(255, 255, 255, 0.1);
             --accent-glow: rgba(255, 255, 255, 0.4);
-            --btn-text: #000;
-            --btn-bg: #fff;
+            
+            --btn-bg: #ffffff;
+            --btn-text: #000000;
             --dropdown-bg: #0a0a0a;
             --scrollbar-track: #000;
             --scrollbar-thumb: #333;
             --toggle-icon: #f5f5f5;
-            --address-color: rgba(255,255,255,0.15);
+
+            /* Ticker Colors (Dark) */
+            --ticker-bg: rgba(20, 20, 20, 0.8);
+            --ticker-border: rgba(255, 255, 255, 0.1);
+            --ticker-shadow: 0 0 20px rgba(99, 102, 241, 0.1);
         }
 
         /* GLOBAL TRANSITIONS */
-        body, .glass-panel, .luxury-input, button, input, select, .premium-glass {
+        body, .glass-panel, .luxury-input, button, input, select, .premium-glass, .hologram-ticker {
             transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
                         color 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
                         border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
@@ -86,23 +116,22 @@
 
         /* Standard Glass Panel */
         .glass-panel {
-            background: var(--panel-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--panel-border);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
         }
 
-        /* REVERTED: PREMIUM GLASS (Clean Style) */
+        /* THEME-ADAPTIVE PREMIUM GLASS (For Login) */
         .premium-glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(40px) saturate(150%);
-            -webkit-backdrop-filter: blur(40px) saturate(150%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 
-                0 40px 100px -10px rgba(0, 0, 0, 0.5),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+            background: var(--auth-glass-bg);
+            backdrop-filter: blur(40px) saturate(120%);
+            -webkit-backdrop-filter: blur(40px) saturate(120%);
+            border: 1px solid var(--auth-glass-border);
+            box-shadow: var(--auth-glass-shadow);
             border-radius: 24px;
+            color: var(--text-color);
         }
 
         /* Elegant Inputs */
@@ -118,23 +147,34 @@
             box-shadow: 0 0 0 2px rgba(125, 125, 125, 0.1);
         }
         
+        /* Hover Animation for Inputs */
+        .luxury-input:hover, .tech-input:hover {
+            border-color: var(--text-muted);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
         .luxury-input.error {
             border-color: #ef4444;
             background: rgba(239, 68, 68, 0.05);
         }
 
-        /* Input Styles for Tech Card */
+        /* Input Styles for Auth Card (Adaptive) */
         .tech-input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: inherit;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-color);
             transition: all 0.3s ease;
         }
         .tech-input:focus {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: var(--glass-bg);
+            border-color: var(--text-muted);
             outline: none;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+        .tech-input::placeholder {
+            color: var(--text-muted);
+            opacity: 0.7;
         }
 
         /* ANIMATIONS */
@@ -193,13 +233,13 @@
             top: 0; left: 0; width: 100%; height: 100%;
             overflow: hidden;
             z-index: 0;
-            opacity: 0.4; /* Calmer opacity */
+            opacity: 0.3; /* Subtle background */
         }
         .data-string {
             position: absolute;
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
-            color: var(--text-muted); /* Adapts to theme */
+            color: var(--text-muted); /* Adapts to theme (Dark grey on light, Light grey on dark) */
             white-space: nowrap;
             user-select: none;
             will-change: transform, opacity;
@@ -212,7 +252,7 @@
             100% { transform: translate(var(--mx), var(--my)); opacity: 0; }
         }
 
-        /* GLOWING BUTTON (Adapts to theme) */
+        /* GLOWING BUTTON WITH HOVER ANIMATION */
         .glow-button {
             border: 1px solid var(--text-color);
             padding: 1em 3em;
@@ -230,9 +270,33 @@
             position: relative;
             width: auto;
             display: inline-block;
+            overflow: hidden; /* For shine effect */
+            transition: all 0.3s ease;
         }
+        
+        /* Hover Shine Effect */
+        .glow-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+        
+        .glow-button:hover::after {
+            left: 100%;
+        }
+
         .glow-button:hover {
-            box-shadow: 0 0 1em 0.5em var(--text-color), 0 0 4em 2em var(--accent-glow);
+            box-shadow: 0 0 1.5em 0.5em var(--text-color), 0 0 5em 3em var(--accent-glow);
+            transform: translateY(-2px);
+        }
+        
+        .glow-button:active {
+            transform: translateY(0);
         }
 
         .pulse-ring { animation: ringPulse 2s infinite; }
@@ -267,14 +331,20 @@
         .coin-transition-container.animating {
             opacity: 1;
         }
+        
+        /* Ensure coin disappears when not animating to avoid glitches */
+        .coin-transition-container:not(.animating) {
+            display: none;
+        }
+
         .coin-mover {
             position: absolute;
-            will-change: transform; /* Hint to browser for GPU acceleration */
+            will-change: transform;
         }
 
         .gold-coin {
-            width: 250px;
-            height: 250px;
+            width: 350px; /* Bigger Size */
+            height: 350px;
             background: radial-gradient(ellipse at center, #ffd700 0%, #b8860b 100%);
             border-radius: 50%;
             box-shadow: 
@@ -283,25 +353,28 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 120px;
+            font-size: 160px; /* Bigger Icon */
             color: #74540d;
-            border: 6px solid #DAA520;
+            border: 8px solid #DAA520;
             will-change: transform;
         }
         .gold-coin::after {
             content: '';
             position: absolute;
-            top: 8px; left: 8px; right: 8px; bottom: 8px;
-            border: 2px dashed #976d08;
+            top: 12px; left: 12px; right: 12px; bottom: 12px;
+            border: 3px dashed #976d08;
             border-radius: 50%;
             opacity: 0.6;
         }
+        
+        /* Slower, smoother animation */
         .animating .coin-mover {
-            animation: slideAcross 1.5s cubic-bezier(0.2, 0.0, 0.2, 1) forwards;
+            animation: slideAcross 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
         }
         .animating .gold-coin {
-            animation: spin3d 0.8s linear infinite;
+            animation: spin3d 1s linear infinite;
         }
+
         @keyframes slideAcross {
             0% { transform: translateX(120vw) scale(0.5); }
             100% { transform: translateX(-120vw) scale(0.5); }
@@ -311,6 +384,41 @@
             100% { transform: rotateY(360deg); }
         }
         
+        /* --- HOLOGRAPHIC TICKER STYLES --- */
+        .hologram-ticker {
+            background: var(--ticker-bg);
+            border: 1px solid var(--ticker-border);
+            box-shadow: var(--ticker-shadow);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 99px;
+            position: relative;
+            overflow: hidden;
+            transform-origin: center bottom;
+        }
+        .hologram-entry {
+            animation: hologramFlip 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+        }
+        @keyframes hologramFlip {
+            0% { opacity: 0; transform: perspective(1000px) rotateX(-90deg) translateY(20px) scale(0.9); }
+            100% { opacity: 1; transform: perspective(1000px) rotateX(0deg) translateY(0) scale(1); }
+        }
+        .hologram-ticker::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: skewX(-20deg);
+            animation: scanShimmer 3s infinite;
+            pointer-events: none;
+        }
+        @keyframes scanShimmer {
+            0%, 50% { left: -100%; }
+            100% { left: 200%; }
+        }
+
         /* Chat Widget */
         .chat-window-enter { animation: slideUpChat 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes slideUpChat { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -391,10 +499,8 @@
             registerUser: async (userData) => {
                 if (!firestore) return null;
                 try {
-                    // Generate unique handle
                     const randomSuffix = Math.floor(10000 + Math.random() * 90000);
                     const uniqueHandle = '@' + userData.name.toLowerCase().replace(/\s/g, '') + randomSuffix;
-                    
                     await addDoc(collection(firestore, 'artifacts', appId, 'public', 'data', 'users'), {
                         ...userData,
                         uniqueHandle,
@@ -467,7 +573,6 @@
 
         // --- NEW CRYPTO BACKGROUND COMPONENT (For Create Page) ---
         const CryptoBackground = () => {
-            // ONLY ICONS, NO TEXT. COLORS ADDED.
             const symbols = [
                 { val: 'ph-currency-btc', color: '#F7931A' }, // Bitcoin Orange
                 { val: 'ph-currency-eth', color: '#627EEA' }, // Ethereum Blue
@@ -573,9 +678,10 @@
             );
         };
 
-        // --- LIVE ACTIVITY TICKER COMPONENT ---
+        // --- LIVE ACTIVITY TICKER COMPONENT (SCRAMBLE EFFECT) ---
         const LiveActivityTicker = () => {
             const [activity, setActivity] = useState(null);
+            const [displayedText, setDisplayedText] = useState("");
             
             const NAMES = [
                 "Rahul", "Priya", "Amit", "Sneha", "Vikram", "Anjali", "Rohan", "Meera", "Suresh", "Kavita",
@@ -587,6 +693,25 @@
             
             const ACTIONS = ["secured", "released", "deposited"];
             const ASSETS = ["BTC", "ETH", "USDT", "SOL", "USDC"];
+
+            useEffect(() => {
+                if (!activity) return;
+                const targetText = activity.text;
+                let iterations = 0;
+                const interval = setInterval(() => {
+                    setDisplayedText(targetText.split("")
+                        .map((letter, index) => {
+                            if(index < iterations) return targetText[index];
+                            return "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()"[Math.floor(Math.random() * 46)];
+                        })
+                        .join("")
+                    );
+                    
+                    if(iterations >= targetText.length) clearInterval(interval);
+                    iterations += 1/2; // Speed of decode
+                }, 30);
+                return () => clearInterval(interval);
+            }, [activity]);
 
             useEffect(() => {
                 const generateActivity = () => {
@@ -607,7 +732,7 @@
                 };
 
                 generateActivity(); // Initial run
-                const interval = setInterval(generateActivity, 4000); // New activity every 4 seconds
+                const interval = setInterval(generateActivity, 6000); 
                 return () => clearInterval(interval);
             }, []);
 
@@ -615,10 +740,11 @@
 
             return (
                 <div className="w-full flex justify-center mb-6">
-                    <div key={activity.id} className="fade-slide-up glass-panel px-6 py-2 rounded-full border border-[var(--panel-border)] flex items-center gap-3 shadow-lg">
-                        <div className={`w-2 h-2 rounded-full ${activity.type === 'secured' ? 'bg-blue-400' : activity.type === 'released' ? 'bg-green-400' : 'bg-yellow-400'} animate-pulse`}></div>
-                        <span className="text-xs font-mono text-[var(--text-color)] tracking-wide">
-                            <span className="font-bold text-[var(--text-muted)]">LIVE:</span> {activity.text}
+                    <div key={activity.id} className="hologram-entry hologram-ticker px-8 py-3 flex items-center gap-4">
+                        <div className={`w-2 h-2 rounded-full ${activity.type === 'secured' ? 'bg-blue-400' : activity.type === 'released' ? 'bg-green-400' : 'bg-yellow-400'} animate-pulse shadow-[0_0_10px_currentColor]`}></div>
+                        <span className="text-xs font-mono text-[var(--text-color)] tracking-widest">
+                            <span className="font-bold text-[var(--text-muted)] mr-2 opacity-50">LIVE_FEED:</span>
+                            {displayedText}
                         </span>
                     </div>
                 </div>
@@ -630,7 +756,7 @@
             return (
                 <div className="relative w-full">
                     {label && <label className="block text-xs font-bold uppercase text-[var(--text-muted)] mb-3">{label}</label>}
-                    <div className="w-full luxury-input rounded p-4 cursor-pointer flex justify-between items-center bg-[var(--input-bg)]" onClick={() => setIsOpen(!isOpen)}>
+                    <div className="w-full tech-input rounded p-4 cursor-pointer flex justify-between items-center bg-[var(--input-bg)]" onClick={() => setIsOpen(!isOpen)}>
                         <span className="font-mono text-sm">{value}</span>
                         <i className={`ph ph-caret-down text-[var(--text-muted)] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}></i>
                     </div>
@@ -645,7 +771,6 @@
             );
         };
 
-        // --- NEW LOGO COMPONENT ---
         const Logo = ({ size = "md" }) => {
             const sizeClasses = size === "lg" ? "w-32 h-32" : "w-12 h-12";
             const fontSize = size === "lg" ? "text-5xl" : "text-xl";
@@ -747,7 +872,6 @@
             );
         };
 
-        // --- CHAT SYSTEM ---
         const ChatWindow = ({ tx, currentUser, onClose }) => {
             const [messages, setMessages] = useState([]);
             const [input, setInput] = useState("");
@@ -956,8 +1080,8 @@
                     {/* Light Data Stream Background for Auth */}
                     <CryptoDataBackground />
                     
-                    {/* REVERTED: Standard Theme-Aware Glass Panel for Login Box */}
-                    <div className="premium-glass w-full max-w-md p-8 rounded-3xl relative z-10 border border-[var(--panel-border)] shadow-2xl">
+                    {/* PREIUM GLASS Panel for Login Box (Reference Image Style) */}
+                    <div className="premium-glass w-full max-w-md p-8 rounded-3xl relative z-10 shadow-2xl">
                         <div className="text-center mb-8">
                             <div className="mb-4 flex justify-center">
                                 <Logo />
@@ -965,7 +1089,7 @@
                             <h1 className="text-3xl font-serif mt-2 tracking-wide text-[var(--text-color)]">Shieldscrow</h1>
                             <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] mt-2">The Standard in Digital Trust</p>
                         </div>
-                        <div className="flex mb-6 border-b border-[var(--panel-border)] cursor-pointer">
+                        <div className="flex mb-6 border-b border-white/20 cursor-pointer">
                             <div onClick={() => setMode('login')} className={`flex-1 pb-3 text-center text-sm font-bold uppercase transition-colors ${mode==='login'?'border-b-2 border-[var(--text-color)] text-[var(--text-color)]':'text-[var(--text-muted)] hover:text-[var(--text-color)]'}`}>Login</div>
                             <div onClick={() => setMode('signup')} className={`flex-1 pb-3 text-center text-sm font-bold uppercase transition-colors ${mode==='signup'?'border-b-2 border-[var(--text-color)] text-[var(--text-color)]':'text-[var(--text-muted)] hover:text-[var(--text-color)]'}`}>Sign Up</div>
                         </div>
@@ -974,8 +1098,8 @@
                             {mode === 'signup' && <><input type="date" className="w-full tech-input p-3 rounded-lg" onChange={e => setFormData({...formData, dob: e.target.value})} /><CustomSelect label="Region" options={["North America", "Europe", "Asia"]} value={formData.region} onChange={v => setFormData({...formData, region: v})} /></>}
                             <input type="password" placeholder="Password" className="w-full tech-input p-3 rounded-lg transition-all focus:scale-[1.02]" onChange={e => setFormData({...formData, password: e.target.value})} />
                             {error && <p className="text-red-400 text-xs text-center bg-red-900/20 p-2 rounded border border-red-500/20">{error}</p>}
-                            <button onClick={handleAuth} disabled={isLoading} className="glow-button w-full text-center mt-4 flex justify-center items-center hover:scale-[1.02] active:scale-[0.98] transition-transform">{isLoading ? <i className="ph ph-spinner animate-spin text-lg"></i> : (mode === 'login' ? 'Access Account' : 'Create Membership')}</button>
-                            <div className="pt-4 text-center border-t border-[var(--panel-border)] mt-6"><button onClick={handleAdminBypass} className="text-[9px] uppercase tracking-widest text-[var(--text-muted)] hover:text-[var(--text-color)] transition">Admin Access</button></div>
+                            <button onClick={handleAuth} disabled={isLoading} className="glow-button w-full text-center mt-4 flex justify-center items-center hover:scale-[1.02] active:scale-[0.98] transition-transform bg-white text-black border-transparent hover:shadow-[0_0_20px_rgba(255,255,255,0.4)]">{isLoading ? <i className="ph ph-spinner animate-spin text-lg"></i> : (mode === 'login' ? 'Access Account' : 'Create Membership')}</button>
+                            <div className="pt-4 text-center border-t border-white/10 mt-6"><button onClick={handleAdminBypass} className="text-[9px] uppercase tracking-widest text-[var(--text-muted)] hover:text-[var(--text-color)] transition">Admin Access</button></div>
                         </div>
                     </div>
                 </div>
@@ -1163,12 +1287,12 @@
         };
 
         const Navbar = ({ setView, currentUser, onLogout }) => (
-            <nav className="w-full h-24 border-b border-[var(--panel-border)] flex items-center justify-between px-8 md:px-16 bg-[var(--panel-bg)] backdrop-blur-md sticky top-0 z-50 transition-all duration-300">
+            <nav className="w-full h-24 border-b border-[var(--panel-border)] flex items-center justify-between px-8 md:px-16 bg-[var(--panel-bg)] backdrop-blur-md sticky top-0 z-50 transition-all duration-300 flex-wrap">
                 <div className="flex items-center gap-3 cursor-pointer group" onClick={() => setView('landing')}>
                     <div className="w-10 h-10 bg-[var(--text-color)] rounded flex items-center justify-center text-[var(--bg-color)] shadow-white"><i className="ph ph-shield-check text-2xl"></i></div>
                     <span className="text-2xl font-serif font-medium tracking-wide text-[var(--text-color)]">Shieldscrow</span>
                 </div>
-                <div className="flex items-center gap-8">
+                <div className="flex items-center gap-4 md:gap-8 mt-4 md:mt-0">
                     <ThemeToggle />
                     {currentUser ? (
                         <>
@@ -1241,7 +1365,7 @@
                 return () => clearInterval(i);
             }, [transactions]);
 
-            const handleAuthSuccess = (userData) => { setIsCoinAnimating(true); setTimeout(() => { setUser(userData); setView('landing'); setTimeout(() => { setIsCoinAnimating(false); }, 800); }, 800); };
+            const handleAuthSuccess = (userData) => { setIsCoinAnimating(true); setTimeout(() => { setUser(userData); setView('landing'); setTimeout(() => { setIsCoinAnimating(false); }, 2600); }, 1200); };
             const handleLogout = () => { setUser(null); setView('auth'); };
             const handleDeliverySubmit = (link) => {
                 if(!link.trim()) return alert("Link required");
