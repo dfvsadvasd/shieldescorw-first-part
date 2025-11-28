@@ -55,6 +55,11 @@
             --ticker-bg: rgba(255, 255, 255, 0.8);
             --ticker-border: rgba(15, 23, 42, 0.1);
             --ticker-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+
+             /* Aurora Gradient Colors (Light) */
+            --aurora-1: #ffc4dd; 
+            --aurora-2: #c4e0ff;
+            --aurora-3: #e8dff5;
         }
 
         /* DARK THEME OVERRIDES */
@@ -89,6 +94,11 @@
             --ticker-bg: rgba(20, 20, 20, 0.8);
             --ticker-border: rgba(255, 255, 255, 0.1);
             --ticker-shadow: 0 0 20px rgba(99, 102, 241, 0.1);
+
+             /* Aurora Gradient Colors (Dark) */
+            --aurora-1: #2e1065; 
+            --aurora-2: #0f172a; 
+            --aurora-3: #172554;
         }
 
         /* GLOBAL TRANSITIONS */
@@ -250,6 +260,32 @@
             10% { opacity: 0.4; }
             90% { opacity: 0.4; }
             100% { transform: translate(var(--mx), var(--my)); opacity: 0; }
+        }
+
+        /* AURORA BACKGROUND STYLES */
+        .aurora-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: var(--bg-color);
+        }
+        .aurora-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: floatBlob 20s infinite ease-in-out alternate;
+        }
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: var(--aurora-1); animation-delay: 0s; }
+        .blob-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: var(--aurora-2); animation-delay: -5s; }
+        .blob-3 { top: 40%; left: 40%; width: 40vw; height: 40vw; background: var(--aurora-3); animation-delay: -10s; }
+
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
         }
 
         /* GLOWING BUTTON WITH HOVER ANIMATION */
@@ -660,6 +696,15 @@
             );
         };
 
+        // --- AURORA BACKGROUND COMPONENT ---
+        const AuroraBackground = () => (
+            <div className="aurora-container">
+                <div className="aurora-blob blob-1"></div>
+                <div className="aurora-blob blob-2"></div>
+                <div className="aurora-blob blob-3"></div>
+            </div>
+        );
+
         const ThemeToggle = () => {
             const [theme, setTheme] = useState('light'); 
             useEffect(() => {
@@ -942,123 +987,54 @@
             );
         };
 
-        // --- CORE MODALS ---
+        const LandingPage = ({ setView }) => {
+            // Original Grid Layout requested by user (matching "before one")
+            const steps = [
+                { t: "1. Agreement", i: "ph-handshake", c: "text-emerald-400", d: "Buyer and Seller agree on terms and initialize the smart contract." },
+                { t: "2. Funds Deposit", i: "ph-wallet", c: "text-yellow-400", d: "Buyer deposits crypto into the Shieldscrow multi-sig vault." },
+                { t: "3. Secure Delivery", i: "ph-package", c: "text-blue-400", d: "Seller delivers the digital asset knowing payment is secured." },
+                { t: "4. Buyer Inspection", i: "ph-eye", c: "text-purple-400", d: "Buyer inspects the asset within the agreed timeframe." },
+                { t: "5. Release or Refund", i: "ph-hand-tap", c: "text-red-400", d: "Funds released to Seller upon approval, or refunded if disputed." },
+                { t: "6. Transaction Complete", i: "ph-lock-key", c: "text-blue-400", d: "Transaction logged on-chain providing an immutable record." }
+            ];
 
-        const DepositModal = ({ tx, onClose, adminWallets, setProcessingAction, showNotification }) => {
-            const walletAddress = adminWallets[tx.currency] || "Address Not Found";
-            const handleCopy = () => {
-                if (navigator.clipboard) { navigator.clipboard.writeText(walletAddress); showNotification("Address Copied"); } 
-                else { const t = document.createElement("textarea"); t.value = walletAddress; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); showNotification("Address Copied"); }
-            };
-            const handleConfirm = () => {
-                setProcessingAction({ type: 'deposit', text: 'Verifying Blockchain...', status: 'processing' });
-                setTimeout(async () => {
-                    setProcessingAction({ type: 'deposit', text: 'Funds Secured', status: 'success' });
-                    await dbHelper.updateTransaction(tx.id, { status: 'funded', fundedAt: Date.now() });
-                    setTimeout(() => { setProcessingAction(null); onClose(); }, 1500);
-                }, 3000);
-            };
             return (
-                <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 modal-enter">
-                    <div className="glass-panel max-w-md w-full p-8 rounded-xl relative">
-                        <button onClick={onClose} className="absolute top-4 right-4 text-[var(--text-muted)] hover:text-white"><i className="ph ph-x text-xl"></i></button>
-                        <h3 className="text-2xl font-serif mb-2">Secure Deposit</h3>
-                        <p className="text-xs text-[var(--text-muted)] mb-6 uppercase tracking-widest">Send exact amount to the Vault</p>
-                        <div className="bg-white p-4 rounded-lg mx-auto w-48 h-48 mb-6 flex items-center justify-center"><img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${walletAddress}`} alt="QR" className="opacity-90" /></div>
-                        <div className="mb-6"><label className="text-[10px] uppercase font-bold text-[var(--text-muted)]">Vault Address ({tx.currency})</label><div onClick={handleCopy} className="luxury-input p-3 rounded mt-1 flex justify-between items-center cursor-pointer hover:border-[var(--text-color)] transition-colors group"><span className="font-mono text-xs truncate mr-2">{walletAddress}</span><i className="ph ph-copy text-[var(--text-muted)] group-hover:text-white"></i></div></div>
-                        <div className="flex justify-between items-center mb-6 text-sm"><span className="text-[var(--text-muted)]">Amount Due:</span><span className="font-mono font-bold text-emerald-400">{tx.amount}</span></div>
-                        <button onClick={handleConfirm} className="glow-button w-full text-center">I Have Sent The Funds</button>
-                    </div>
-                </div>
-            );
-        };
-
-        const DeliverModal = ({ tx, onClose, onDeliver }) => {
-            const [link, setLink] = useState('');
-            return (
-                <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 modal-enter">
-                    <div className="glass-panel max-w-md w-full p-8 rounded-xl relative">
-                        <button onClick={onClose} className="absolute top-4 right-4 text-[var(--text-muted)] hover:text-white"><i className="ph ph-x text-xl"></i></button>
-                        <h3 className="text-2xl font-serif mb-2">Secure Delivery</h3>
-                        <p className="text-xs text-[var(--text-muted)] mb-6 uppercase tracking-widest">Provide access to the asset</p>
-                        <div className="space-y-4">
-                            <div><label className="text-[10px] uppercase font-bold text-[var(--text-muted)]">Download Link / Access Credentials</label><textarea className="w-full luxury-input p-4 rounded mt-2 h-32 font-mono text-sm resize-none" placeholder="Paste Google Drive link, account credentials, or instructions here..." onChange={(e) => setLink(e.target.value)}></textarea></div>
-                            <div className="text-[10px] text-[var(--text-muted)] flex gap-2"><i className="ph ph-lock-key text-emerald-400"></i><span>This information is encrypted and only visible to the buyer after funds are secured.</span></div>
-                            <button onClick={() => onDeliver(link)} className="glow-button w-full text-center">Encrypt & Send</button>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        const LandingPage = ({ setView }) => (
-            <div className="min-h-screen flex flex-col items-center justify-center text-center px-6 slide-up-enter relative overflow-hidden">
-                <div className="absolute inset-0 z-0 opacity-30 pointer-events-none bg-[url('https://images.unsplash.com/photo-1642104704074-907c0698cbd9?auto=format&fit=crop&q=80&w=2532')] bg-cover bg-center mix-blend-overlay"></div>
-                <div className="relative z-10 max-w-5xl w-full flex flex-col items-center">
-                    <div className="mb-8 relative group cursor-pointer" onClick={() => setView('dashboard')}>
-                        <div className="absolute -inset-4 bg-emerald-500/20 rounded-full blur-xl group-hover:opacity-100 transition duration-1000 opacity-0"></div>
-                        <Logo size="lg" />
-                    </div>
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--panel-border)] mb-8 bg-[var(--input-bg)] backdrop-blur-md"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span><span className="text-xs font-bold uppercase tracking-widest">Live on Mainnet</span></div>
-                    <h1 className="text-5xl md:text-8xl font-serif mb-6 leading-tight text-shadow-lg">Trusted.<br/><span className="italic font-serif text-[var(--text-muted)]">Private. Secure.</span></h1>
-                    <p className="text-lg text-[var(--text-muted)] mb-12 max-w-2xl mx-auto">Shieldscrow is the premier escrow service for high-value digital assets. Protecting over $50M in volume.</p>
-                    <button onClick={() => setView('dashboard')} className="glow-button">Start Transaction</button>
+                <div className="min-h-screen flex flex-col items-center relative overflow-hidden">
+                    {/* ADDED: Aurora Background for Landing Page */}
+                    <AuroraBackground />
                     
-                    {/* NEW ABOUT SECTION */}
-                    <div className="mt-24 w-full text-left">
-                        <h2 className="text-3xl font-serif text-center mb-10">How Shieldscrow Works</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div className="glass-panel p-8 rounded-xl hover:border-emerald-500/30 transition duration-500 flex flex-col items-center text-center">
-                                <div className="w-12 h-12 bg-emerald-900/20 rounded-lg flex items-center justify-center mb-4 text-emerald-400"><i className="ph ph-handshake text-2xl"></i></div>
-                                <h3 className="font-serif text-xl mb-2">1. Agreement</h3>
-                                <p className="text-sm text-[var(--text-muted)]">Buyer and Seller agree on terms and initialize the smart contract. A secure handle is required for both parties.</p>
-                            </div>
-                            <div className="glass-panel p-8 rounded-xl hover:border-yellow-500/30 transition duration-500 flex flex-col items-center text-center">
-                                <div className="w-12 h-12 bg-yellow-900/20 rounded-lg flex items-center justify-center mb-4 text-yellow-400"><i className="ph ph-wallet text-2xl"></i></div>
-                                <h3 className="font-serif text-xl mb-2">2. Funds Deposit</h3>
-                                <p className="text-sm text-[var(--text-muted)]">The Buyer deposits the agreed-upon crypto into the Shieldscrow multi-sig vault. Funds are verified on the blockchain.</p>
-                            </div>
-                            <div className="glass-panel p-8 rounded-xl hover:border-blue-500/30 transition duration-500 flex flex-col items-center text-center">
-                                <div className="w-12 h-12 bg-blue-900/20 rounded-lg flex items-center justify-center mb-4 text-blue-400"><i className="ph ph-package text-2xl"></i></div>
-                                <h3 className="font-serif text-xl mb-2">3. Secure Delivery</h3>
-                                <p className="text-sm text-[var(--text-muted)]">The Seller delivers the digital asset (domain, code, NFT access) knowing the payment is already secured.</p>
-                            </div>
-                            <div className="glass-panel p-8 rounded-xl hover:border-purple-500/30 transition duration-500 flex flex-col items-center text-center">
-                                <div className="w-12 h-12 bg-purple-900/20 rounded-lg flex items-center justify-center mb-4 text-purple-400"><i className="ph ph-eye text-2xl"></i></div>
-                                <h3 className="font-serif text-xl mb-2">4. Buyer Inspection</h3>
-                                <p className="text-sm text-[var(--text-muted)]">The Buyer inspects the asset within the agreed timeframe. Both parties communicate via the secure chat channel.</p>
-                            </div>
-                            <div className="glass-panel p-8 rounded-xl hover:border-red-500/30 transition duration-500 flex flex-col items-center text-center">
-                                <div className="w-12 h-12 bg-red-900/20 rounded-lg flex items-center justify-center mb-4 text-red-400"><i className="ph ph-hand-tap text-2xl"></i></div>
-                                <h3 className="font-serif text-xl mb-2">5. Release or Refund</h3>
-                                <p className="text-sm text-[var(--text-muted)]">If approved, funds are released instantly to the Seller. If rejected, funds are automatically refunded to the Buyer after dispute resolution.</p>
-                            </div>
-                            <div className="glass-panel p-8 rounded-xl hover:border-blue-500/30 transition duration-500 flex flex-col items-center text-center">
-                                <div className="w-12 h-12 bg-blue-900/20 rounded-lg flex items-center justify-center mb-4 text-blue-400"><i className="ph ph-lock-key text-2xl"></i></div>
-                                <h3 className="font-serif text-xl mb-2">6. Transaction Complete</h3>
-                                <p className="text-sm text-[var(--text-muted)]">The secure transaction is logged on-chain, providing an immutable record of the successful exchange.</p>
+                    <div className="relative z-10 w-full flex flex-col items-center pt-24 pb-12 px-6 text-center">
+                        <div className="mb-6"><Logo size="lg" /></div>
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full premium-glass mb-6"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span><span className="text-[10px] font-bold uppercase tracking-widest">Live on Mainnet</span></div>
+                        <h1 className="text-5xl md:text-7xl font-serif mb-6">Trusted.<br/><span className="italic opacity-60">Private. Secure.</span></h1>
+                        <p className="text-lg opacity-60 mb-12 max-w-xl mx-auto">Shieldscrow is the premier escrow service for high-value digital assets. Protecting over $50M in volume.</p>
+                        <button onClick={() => setView('dashboard')} className="glow-button">Start Transaction</button>
+                        
+                        {/* Original Grid Layout */}
+                        <div className="mt-24 w-full max-w-6xl px-6 pb-24">
+                            <h2 className="text-2xl font-serif mb-10 text-center">How Shieldscrow Works</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {steps.map((s, i) => (
+                                    <div key={i} className="glass-panel p-8 rounded-xl hover:border-[var(--text-color)] transition duration-500 text-center group">
+                                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 mx-auto bg-current/10 ${s.c} group-hover:scale-110 transition-transform`}><i className={`ph ${s.i} text-2xl`}></i></div>
+                                        <h3 className="font-serif text-lg mb-2">{s.t}</h3>
+                                        <p className="text-xs opacity-60 leading-relaxed">{s.d}</p>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
-
-                    {/* MOVED: The original small feature cards are now removed to make room for the detailed section above */}
-                    <div className="mt-24 w-full text-left hidden">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full text-left">
-                            <div className="glass-panel p-8 rounded-xl hover:border-emerald-500/30 transition duration-500"><div className="w-12 h-12 bg-emerald-900/20 rounded-lg flex items-center justify-center mb-4 text-emerald-400"><i className="ph ph-lock-key text-2xl"></i></div><h3 className="font-serif text-xl mb-2">Secure Vault</h3><p className="text-sm text-[var(--text-muted)]">Funds held in multi-sig smart contracts.</p></div>
-                            <div className="glass-panel p-8 rounded-xl hover:border-blue-500/30 transition duration-500"><div className="w-12 h-12 bg-blue-900/20 rounded-lg flex items-center justify-center mb-4 text-blue-400"><i className="ph ph-lightning text-2xl"></i></div><h3 className="font-serif text-xl mb-2">Instant</h3><p className="text-sm text-[var(--text-muted)]">Settlement in seconds, not days.</p></div>
-                            <div className="glass-panel p-8 rounded-xl hover:border-purple-500/30 transition duration-500"><div className="w-12 h-12 bg-purple-900/20 rounded-lg flex items-center justify-center mb-4 text-purple-400"><i className="ph ph-shield-check text-2xl"></i></div><h3 className="font-serif text-xl mb-2">Verified</h3><p className="text-sm text-[var(--text-muted)]">AI-powered fraud detection.</p></div>
-                        </div>
-                    </div>
-
                 </div>
-            </div>
-        );
+            );
+        };
 
         const AuthScreen = ({ onAuthSuccess, setProcessingAction }) => {
             const [mode, setMode] = useState('login');
             const [formData, setFormData] = useState({ name: '', password: '', region: 'Global', dob: '' });
             const [error, setError] = useState('');
             const [isLoading, setIsLoading] = useState(false);
+            
+            // Removed showCopyTooltip state since we removed the feature from this page
 
             const handleAuth = async () => {
                 setError('');
@@ -1073,6 +1049,7 @@
                 }
                 setIsLoading(false);
             };
+            
             const handleAdminBypass = () => { const adminUser = { name: 'Admin', role: 'admin', uniqueHandle: '@admin001' }; onAuthSuccess(adminUser); };
 
             return (
@@ -1086,20 +1063,24 @@
                             <div className="mb-4 flex justify-center">
                                 <Logo />
                             </div>
-                            <h1 className="text-3xl font-serif mt-2 tracking-wide text-[var(--text-color)]">Shieldscrow</h1>
-                            <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] mt-2">The Standard in Digital Trust</p>
+                            <h1 className="text-3xl font-serif mt-2 tracking-wide text-[var(--auth-text)]">Shieldscrow</h1>
+                            <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--auth-muted)] mt-2">The Standard in Digital Trust</p>
                         </div>
-                        <div className="flex mb-6 border-b border-white/20 cursor-pointer">
-                            <div onClick={() => setMode('login')} className={`flex-1 pb-3 text-center text-sm font-bold uppercase transition-colors ${mode==='login'?'border-b-2 border-[var(--text-color)] text-[var(--text-color)]':'text-[var(--text-muted)] hover:text-[var(--text-color)]'}`}>Login</div>
-                            <div onClick={() => setMode('signup')} className={`flex-1 pb-3 text-center text-sm font-bold uppercase transition-colors ${mode==='signup'?'border-b-2 border-[var(--text-color)] text-[var(--text-color)]':'text-[var(--text-muted)] hover:text-[var(--text-color)]'}`}>Sign Up</div>
+                        <div className="flex mb-6 border-b border-[var(--auth-glass-border)] cursor-pointer">
+                            <div onClick={() => setMode('login')} className={`flex-1 pb-3 text-center text-sm font-bold uppercase transition-colors ${mode==='login'?'border-b-2 border-[var(--auth-text)] text-[var(--auth-text)]':'text-[var(--auth-muted)] hover:text-[var(--auth-text)]'}`}>Login</div>
+                            <div onClick={() => setMode('signup')} className={`flex-1 pb-3 text-center text-sm font-bold uppercase transition-colors ${mode==='signup'?'border-b-2 border-[var(--auth-text)] text-[var(--auth-text)]':'text-[var(--auth-muted)] hover:text-[var(--auth-text)]'}`}>Sign Up</div>
                         </div>
                         <div className="space-y-4">
                             <input type="text" placeholder="Username" className="w-full tech-input p-3 rounded-lg transition-all focus:scale-[1.02]" onChange={e => setFormData({...formData, name: e.target.value})} />
                             {mode === 'signup' && <><input type="date" className="w-full tech-input p-3 rounded-lg" onChange={e => setFormData({...formData, dob: e.target.value})} /><CustomSelect label="Region" options={["North America", "Europe", "Asia"]} value={formData.region} onChange={v => setFormData({...formData, region: v})} /></>}
                             <input type="password" placeholder="Password" className="w-full tech-input p-3 rounded-lg transition-all focus:scale-[1.02]" onChange={e => setFormData({...formData, password: e.target.value})} />
                             {error && <p className="text-red-400 text-xs text-center bg-red-900/20 p-2 rounded border border-red-500/20">{error}</p>}
-                            <button onClick={handleAuth} disabled={isLoading} className="glow-button w-full text-center mt-4 flex justify-center items-center hover:scale-[1.02] active:scale-[0.98] transition-transform bg-white text-black border-transparent hover:shadow-[0_0_20px_rgba(255,255,255,0.4)]">{isLoading ? <i className="ph ph-spinner animate-spin text-lg"></i> : (mode === 'login' ? 'Access Account' : 'Create Membership')}</button>
-                            <div className="pt-4 text-center border-t border-white/10 mt-6"><button onClick={handleAdminBypass} className="text-[9px] uppercase tracking-widest text-[var(--text-muted)] hover:text-[var(--text-color)] transition">Admin Access</button></div>
+                            <button onClick={handleAuth} disabled={isLoading} className="glow-button w-full text-center mt-4 flex justify-center items-center hover:scale-[1.02] active:scale-[0.98] transition-transform bg-[var(--auth-btn-bg)] text-[var(--auth-btn-text)] border-transparent hover:shadow-[0_0_20px_rgba(255,255,255,0.4)]">{isLoading ? <i className="ph ph-spinner animate-spin text-lg"></i> : (mode === 'login' ? 'Access Account' : 'Create Membership')}</button>
+                            
+                            {/* REMOVED Click-to-Copy here. Only Admin Access button remains. */}
+                            <div className="pt-4 text-center border-t border-[var(--auth-glass-border)] mt-6 flex flex-col items-center gap-2">
+                                <button onClick={handleAdminBypass} className="text-[9px] uppercase tracking-widest text-[var(--auth-muted)] hover:text-[var(--auth-text)] transition">Admin Access</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1286,27 +1267,42 @@
             );
         };
 
-        const Navbar = ({ setView, currentUser, onLogout }) => (
-            <nav className="w-full h-24 border-b border-[var(--panel-border)] flex items-center justify-between px-8 md:px-16 bg-[var(--panel-bg)] backdrop-blur-md sticky top-0 z-50 transition-all duration-300 flex-wrap">
-                <div className="flex items-center gap-3 cursor-pointer group" onClick={() => setView('landing')}>
-                    <div className="w-10 h-10 bg-[var(--text-color)] rounded flex items-center justify-center text-[var(--bg-color)] shadow-white"><i className="ph ph-shield-check text-2xl"></i></div>
-                    <span className="text-2xl font-serif font-medium tracking-wide text-[var(--text-color)]">Shieldscrow</span>
-                </div>
-                <div className="flex items-center gap-4 md:gap-8 mt-4 md:mt-0">
-                    <ThemeToggle />
-                    {currentUser ? (
-                        <>
-                            <div className="flex flex-col items-end cursor-pointer hover:opacity-80" onClick={() => setView('landing')}>
-                                <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-color)]">{currentUser.name}</span>
-                                <span className="text-[10px] text-emerald-400 font-mono">{currentUser.uniqueHandle}</span>
-                            </div>
-                            <button onClick={() => setView('dashboard')} className="text-xs uppercase tracking-widest font-medium hover:text-[var(--text-muted)] text-[var(--text-color)]">Dashboard</button>
-                            <button onClick={onLogout} className="text-xs uppercase tracking-widest text-red-400 hover:text-red-300">Logout</button>
-                        </>
-                    ) : <button onClick={() => setView('auth')} className="text-xs uppercase tracking-widest font-bold bg-[var(--text-color)] text-[var(--bg-color)] px-6 py-2 rounded hover:opacity-80">Sign In</button>}
-                </div>
-            </nav>
-        );
+        const Navbar = ({ setView, currentUser, onLogout }) => {
+            const [showCopyTooltip, setShowCopyTooltip] = useState(false);
+
+            const handleCopyHandle = () => {
+                if (navigator.clipboard && currentUser?.uniqueHandle) {
+                    navigator.clipboard.writeText(currentUser.uniqueHandle);
+                    setShowCopyTooltip(true);
+                    setTimeout(() => setShowCopyTooltip(false), 2000);
+                }
+            };
+
+            return (
+                <nav className="w-full h-24 border-b border-[var(--panel-border)] flex items-center justify-between px-8 md:px-16 bg-[var(--panel-bg)] backdrop-blur-md sticky top-0 z-50 transition-all duration-300 flex-wrap">
+                    <div className="flex items-center gap-3 cursor-pointer group" onClick={() => setView('landing')}>
+                        <div className="w-10 h-10 bg-[var(--text-color)] rounded flex items-center justify-center text-[var(--bg-color)] shadow-white"><i className="ph ph-shield-check text-2xl"></i></div>
+                        <span className="text-2xl font-serif font-medium tracking-wide text-[var(--text-color)]">Shieldscrow</span>
+                    </div>
+                    <div className="flex items-center gap-4 md:gap-8 mt-4 md:mt-0">
+                        <ThemeToggle />
+                        {currentUser ? (
+                            <>
+                                <div className="flex flex-col items-end cursor-pointer hover:opacity-80 relative group" onClick={handleCopyHandle} title="Click to copy handle">
+                                    <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-color)]">{currentUser.name}</span>
+                                    <span className="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+                                        {currentUser.uniqueHandle} <i className="ph-bold ph-copy-simple"></i>
+                                    </span>
+                                    {showCopyTooltip && <span className="absolute top-10 right-0 text-[9px] bg-black text-white px-2 py-1 rounded fade-in z-50 shadow-lg">Copied!</span>}
+                                </div>
+                                <button onClick={() => setView('dashboard')} className="text-xs uppercase tracking-widest font-medium hover:text-[var(--text-muted)] text-[var(--text-color)]">Dashboard</button>
+                                <button onClick={onLogout} className="text-xs uppercase tracking-widest text-red-400 hover:text-red-300">Logout</button>
+                            </>
+                        ) : <button onClick={() => setView('auth')} className="text-xs uppercase tracking-widest font-bold bg-[var(--text-color)] text-[var(--bg-color)] px-6 py-2 rounded hover:opacity-80">Sign In</button>}
+                    </div>
+                </nav>
+            );
+        };
 
         const AnimationDebugBox = ({ setProcessingAction }) => (
             <div className="fixed bottom-24 right-6 z-50 glass-panel p-4 rounded-lg flex flex-col gap-2 w-32 opacity-50 hover:opacity-100 transition-opacity">
