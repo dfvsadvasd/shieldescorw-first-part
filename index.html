@@ -30,18 +30,19 @@
             --text-muted: #64748b;
             
             /* Glass Card Vars (Light) */
-            --glass-bg: rgba(255, 255, 255, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            /* Darker border so cards are visible against white background */
+            --glass-border: rgba(0, 0, 0, 0.1); 
             --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
             --glass-blur: blur(24px);
             
-            /* Premium Auth Glass (Light) */
-            --auth-glass-bg: rgba(255, 255, 255, 0.1);
-            --auth-glass-border: rgba(0, 0, 0, 0.05);
-            --auth-glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            /* Premium Auth Glass (Light) - Visible Milky Glass */
+            --auth-glass-bg: rgba(255, 255, 255, 0.85); 
+            --auth-glass-border: rgba(0, 0, 0, 0.1);
+            --auth-glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 
             --input-bg: rgba(255, 255, 255, 0.6);
-            --input-border: rgba(0, 0, 0, 0.1);
+            --input-border: rgba(0, 0, 0, 0.15);
             --accent-glow: rgba(0, 0, 0, 0.05);
             
             --btn-bg: #0f172a;
@@ -262,13 +263,15 @@
             top: 0; left: 0; width: 100%; height: 100%;
             overflow: hidden;
             z-index: 0;
-            opacity: 0.3; /* Subtle background */
+            /* FIXED: Increased Opacity for Visibility in Light Mode */
+            opacity: 0.5; 
         }
         .data-string {
             position: absolute;
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
-            color: var(--text-muted); /* Adapts to theme (Dark grey on light, Light grey on dark) */
+            /* FIXED: Use text-color (Dark Blue/Black in Light Mode) for visibility */
+            color: var(--text-color); 
             white-space: nowrap;
             user-select: none;
             will-change: transform, opacity;
@@ -299,13 +302,6 @@
         .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: var(--aurora-1); animation-delay: 0s; }
         .blob-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: var(--aurora-2); animation-delay: -5s; }
         .blob-3 { top: 40%; left: 40%; width: 40vw; height: 40vw; background: var(--aurora-3); animation-delay: -10s; }
-
-        @keyframes floatBlob {
-            0% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0, 0) scale(1); }
-        }
 
         /* GLOWING BUTTON WITH HOVER ANIMATION */
         .glow-button {
