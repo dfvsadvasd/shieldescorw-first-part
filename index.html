@@ -50,6 +50,10 @@
             --scrollbar-track: #f0f0f0;
             --scrollbar-thumb: #ccc;
             --toggle-icon: #0f172a;
+            
+            /* Panel Backgrounds for Navbar/Chat */
+            --panel-bg: rgba(255, 255, 255, 0.9);
+            --panel-border: rgba(0,0,0,0.1);
 
             /* Ticker Colors (Light) */
             --ticker-bg: rgba(255, 255, 255, 0.8);
@@ -60,6 +64,12 @@
             --aurora-1: #ffc4dd; 
             --aurora-2: #c4e0ff;
             --aurora-3: #e8dff5;
+
+            /* Auth Page Specifics (Light) */
+            --auth-text: #0f172a;
+            --auth-muted: #64748b;
+            --auth-btn-bg: #0f172a;
+            --auth-btn-text: #ffffff;
         }
 
         /* DARK THEME OVERRIDES */
@@ -89,6 +99,9 @@
             --scrollbar-track: #000;
             --scrollbar-thumb: #333;
             --toggle-icon: #f5f5f5;
+            
+            --panel-bg: rgba(20, 20, 20, 0.95);
+            --panel-border: rgba(255, 255, 255, 0.1);
 
             /* Ticker Colors (Dark) */
             --ticker-bg: rgba(20, 20, 20, 0.8);
@@ -99,10 +112,16 @@
             --aurora-1: #2e1065; 
             --aurora-2: #0f172a; 
             --aurora-3: #172554;
+            
+            /* Auth Page Specifics (Dark) */
+            --auth-text: #f5f5f5;
+            --auth-muted: #a3a3a3;
+            --auth-btn-bg: #ffffff;
+            --auth-btn-text: #000000;
         }
 
         /* GLOBAL TRANSITIONS */
-        body, .glass-panel, .luxury-input, button, input, select, .premium-glass, .hologram-ticker {
+        body, .glass-panel, .luxury-input, button, input, select, .premium-glass, .hologram-ticker, .tech-input {
             transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
                         color 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
                         border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
@@ -458,6 +477,47 @@
         /* Chat Widget */
         .chat-window-enter { animation: slideUpChat 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes slideUpChat { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* --- NEW STYLES FOR WIZARD & SPOTLIGHT (V2 UPGRADE) --- */
+
+        /* 1. Mouse Spotlight Effect */
+        .spotlight-card {
+            position: relative;
+            overflow: hidden;
+            --mouse-x: 50%;
+            --mouse-y: 50%;
+        }
+        .spotlight-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(
+                800px circle at var(--mouse-x) var(--mouse-y), 
+                rgba(255, 255, 255, 0.15), 
+                transparent 40%
+            );
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .spotlight-card:hover::before {
+            opacity: 1;
+        }
+
+        /* 2. Wizard Step Animations */
+        .step-slide-enter {
+            animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* 3. Progress Bar Glow */
+        .progress-glow {
+            box-shadow: 0 0 10px 2px var(--accent-glow);
+        }
     </style>
 
     <!-- 2. FIREBASE MODULES (Setup for Global Access) -->
@@ -987,8 +1047,82 @@
             );
         };
 
+        // --- CORE MODALS ---
+
+        const DepositModal = ({ tx, onClose, adminWallets, setProcessingAction, showNotification }) => {
+            const walletAddress = adminWallets[tx.currency] || "Address Not Found";
+            const handleCopy = () => {
+                // Fallback copy function defined inside to capture walletAddress
+                const fallbackCopy = () => {
+                    try {
+                        const t = document.createElement("textarea");
+                        t.value = walletAddress;
+                        t.style.position = "fixed";
+                        t.style.left = "-9999px";
+                        document.body.appendChild(t);
+                        t.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(t);
+                        showNotification("Address Copied");
+                    } catch (e) {
+                        console.error("Copy failed", e);
+                        showNotification("Copy failed", "error");
+                    }
+                };
+
+                if (navigator.clipboard) { 
+                    navigator.clipboard.writeText(walletAddress)
+                        .then(() => showNotification("Address Copied"))
+                        .catch(err => {
+                            console.warn("Clipboard API failed, using fallback", err);
+                            fallbackCopy();
+                        });
+                } else { 
+                    fallbackCopy(); 
+                }
+            };
+            const handleConfirm = () => {
+                setProcessingAction({ type: 'deposit', text: 'Verifying Blockchain...', status: 'processing' });
+                setTimeout(async () => {
+                    setProcessingAction({ type: 'deposit', text: 'Funds Secured', status: 'success' });
+                    await dbHelper.updateTransaction(tx.id, { status: 'funded', fundedAt: Date.now() });
+                    setTimeout(() => { setProcessingAction(null); onClose(); }, 1500);
+                }, 3000);
+            };
+            return (
+                <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 modal-enter">
+                    <div className="glass-panel max-w-md w-full p-8 rounded-xl relative">
+                        <button onClick={onClose} className="absolute top-4 right-4 text-[var(--text-muted)] hover:text-white"><i className="ph ph-x text-xl"></i></button>
+                        <h3 className="text-2xl font-serif mb-2">Secure Deposit</h3>
+                        <p className="text-xs text-[var(--text-muted)] mb-6 uppercase tracking-widest">Send exact amount to the Vault</p>
+                        <div className="bg-white p-4 rounded-lg mx-auto w-48 h-48 mb-6 flex items-center justify-center"><img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${walletAddress}`} alt="QR" className="opacity-90" /></div>
+                        <div className="mb-6"><label className="text-[10px] uppercase font-bold text-[var(--text-muted)]">Vault Address ({tx.currency})</label><div onClick={handleCopy} className="luxury-input p-3 rounded mt-1 flex justify-between items-center cursor-pointer hover:border-[var(--text-color)] transition-colors group"><span className="font-mono text-xs truncate mr-2">{walletAddress}</span><i className="ph ph-copy text-[var(--text-muted)] group-hover:text-white"></i></div></div>
+                        <div className="flex justify-between items-center mb-6 text-sm"><span className="text-[var(--text-muted)]">Amount Due:</span><span className="font-mono font-bold text-emerald-400">{tx.amount}</span></div>
+                        <button onClick={handleConfirm} className="glow-button w-full text-center">I Have Sent The Funds</button>
+                    </div>
+                </div>
+            );
+        };
+
+        const DeliverModal = ({ tx, onClose, onDeliver }) => {
+            const [link, setLink] = useState('');
+            return (
+                <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 modal-enter">
+                    <div className="glass-panel max-w-md w-full p-8 rounded-xl relative">
+                        <button onClick={onClose} className="absolute top-4 right-4 text-[var(--text-muted)] hover:text-white"><i className="ph ph-x text-xl"></i></button>
+                        <h3 className="text-2xl font-serif mb-2">Secure Delivery</h3>
+                        <p className="text-xs text-[var(--text-muted)] mb-6 uppercase tracking-widest">Provide access to the asset</p>
+                        <div className="space-y-4">
+                            <div><label className="text-[10px] uppercase font-bold text-[var(--text-muted)]">Download Link / Access Credentials</label><textarea className="w-full luxury-input p-4 rounded mt-2 h-32 font-mono text-sm resize-none" placeholder="Paste Google Drive link, account credentials, or instructions here..." onChange={(e) => setLink(e.target.value)}></textarea></div>
+                            <div className="text-[10px] text-[var(--text-muted)] flex gap-2"><i className="ph ph-lock-key text-emerald-400"></i><span>This information is encrypted and only visible to the buyer after funds are secured.</span></div>
+                            <button onClick={() => onDeliver(link)} className="glow-button w-full text-center">Encrypt & Send</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         const LandingPage = ({ setView }) => {
-            // Original Grid Layout requested by user (matching "before one")
             const steps = [
                 { t: "1. Agreement", i: "ph-handshake", c: "text-emerald-400", d: "Buyer and Seller agree on terms and initialize the smart contract." },
                 { t: "2. Funds Deposit", i: "ph-wallet", c: "text-yellow-400", d: "Buyer deposits crypto into the Shieldscrow multi-sig vault." },
@@ -1034,8 +1168,6 @@
             const [error, setError] = useState('');
             const [isLoading, setIsLoading] = useState(false);
             
-            // Removed showCopyTooltip state since we removed the feature from this page
-
             const handleAuth = async () => {
                 setError('');
                 setIsLoading(true);
@@ -1057,7 +1189,7 @@
                     {/* Light Data Stream Background for Auth */}
                     <CryptoDataBackground />
                     
-                    {/* PREIUM GLASS Panel for Login Box (Reference Image Style) */}
+                    {/* PREIUM GLASS Panel for Login Box */}
                     <div className="premium-glass w-full max-w-md p-8 rounded-3xl relative z-10 shadow-2xl">
                         <div className="text-center mb-8">
                             <div className="mb-4 flex justify-center">
@@ -1077,7 +1209,6 @@
                             {error && <p className="text-red-400 text-xs text-center bg-red-900/20 p-2 rounded border border-red-500/20">{error}</p>}
                             <button onClick={handleAuth} disabled={isLoading} className="glow-button w-full text-center mt-4 flex justify-center items-center hover:scale-[1.02] active:scale-[0.98] transition-transform bg-[var(--auth-btn-bg)] text-[var(--auth-btn-text)] border-transparent hover:shadow-[0_0_20px_rgba(255,255,255,0.4)]">{isLoading ? <i className="ph ph-spinner animate-spin text-lg"></i> : (mode === 'login' ? 'Access Account' : 'Create Membership')}</button>
                             
-                            {/* REMOVED Click-to-Copy here. Only Admin Access button remains. */}
                             <div className="pt-4 text-center border-t border-[var(--auth-glass-border)] mt-6 flex flex-col items-center gap-2">
                                 <button onClick={handleAdminBypass} className="text-[9px] uppercase tracking-widest text-[var(--auth-muted)] hover:text-[var(--auth-text)] transition">Admin Access</button>
                             </div>
@@ -1127,15 +1258,26 @@
             </div>
         );
 
+        /* --- NEW WIZARD COMPONENT REPLACING THE OLD CREATE TRANSACTION --- */
         const CreateTransaction = ({ setView, adminWallets, currentUser, showNotification }) => {
-            // FIX: Removed the 'frequency' state to reflect the user's request
-            const [form, setForm] = useState({ title: '', amount: '', role: 'buyer', currency: 'Ethereum (ETH)', counterpartyHandle: '', terms: '' });
-            
+            const [step, setStep] = useState(1);
+            const [form, setForm] = useState({ 
+                title: '', amount: '', role: '', currency: 'Ethereum (ETH)', 
+                counterpartyHandle: '', terms: '' 
+            });
+
+            // Helper to track mouse for Spotlight Effect
+            const handleMouseMove = (e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
+                e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
+            };
+
             const handleSubmit = async () => {
-                if (!form.title || !form.amount || !form.counterpartyHandle) return alert("Fields required");
-                if (!form.counterpartyHandle.startsWith('@')) return alert("Counterparty Handle must start with @");
+                if (!form.title || !form.amount || !form.counterpartyHandle) return showNotification("Please fill all fields", "error");
                 
-                // FIX: Handle legacy users who might not have a uniqueHandle yet
                 const myHandle = currentUser.uniqueHandle || ("@" + currentUser.name.toLowerCase().replace(/\s/g, '') + "0000");
 
                 const newTx = { 
@@ -1145,15 +1287,13 @@
                     currency: form.currency, 
                     status: 'created', 
                     buyerVerification: 'pending', 
-                    // Removed frequency from the object
-                    // Logic to assign handles based on role
                     buyerHandle: form.role === 'buyer' ? myHandle : form.counterpartyHandle,
                     sellerHandle: form.role === 'seller' ? myHandle : form.counterpartyHandle,
                     creatorHandle: myHandle,
                     counterpartyHandle: form.counterpartyHandle,
                     buyerName: form.role === 'buyer' ? currentUser.name : "Counterparty", 
                     sellerName: form.role === 'seller' ? currentUser.name : "Counterparty", 
-                    terms: form.terms || "", // Ensure not undefined
+                    terms: form.terms || "",
                     history: [{ step: 'Created', time: new Date().toLocaleTimeString() }] 
                 };
                 await dbHelper.createTransaction(newTx);
@@ -1161,57 +1301,160 @@
                 setView('dashboard');
             };
 
-            const getSymbol = (currencyStr) => { const match = currencyStr.match(/\(([^)]+)\)/); return match ? match[1] : ''; };
+            const nextStep = () => {
+                if (step === 1 && !form.role) return showNotification("Select a role", "error");
+                if (step === 2 && (!form.counterpartyHandle || !form.title)) return showNotification("Details required", "error");
+                setStep(step + 1);
+            };
+
+            const renderProgressBar = () => (
+                <div className="w-full h-1 bg-[var(--input-bg)] rounded-full mb-8 overflow-hidden flex">
+                    <div className={`h-full transition-all duration-500 ease-out progress-glow ${step >= 1 ? 'bg-emerald-400 w-1/3' : 'w-0'}`}></div>
+                    <div className={`h-full transition-all duration-500 ease-out progress-glow ${step >= 2 ? 'bg-emerald-400 w-1/3' : 'w-0'}`}></div>
+                    <div className={`h-full transition-all duration-500 ease-out progress-glow ${step >= 3 ? 'bg-emerald-400 w-1/3' : 'w-0'}`}></div>
+                </div>
+            );
 
             return (
-                // WRAPPER: Moved CryptoBackground outside the fade-in div, wrapped in fragment
                 <>
-                    {/* ADDED: Crypto Floating Background - Now covers full page via fixed positioning */}
                     <CryptoBackground />
+                    <div className="max-w-2xl mx-auto mt-12 px-6 fade-in mb-24 relative z-10">
+                        <button onClick={() => setView('dashboard')} className="mb-8 text-xs font-bold uppercase flex items-center gap-2 text-[var(--text-muted)] hover:text-[var(--text-color)] transition-colors">
+                            <i className="ph ph-arrow-left"></i> Cancel Transaction
+                        </button>
+                        
+                        {/* THE SPOTLIGHT WIZARD CARD */}
+                        <div 
+                            className="glass-panel p-8 md:p-12 rounded-2xl border border-[var(--panel-border)] spotlight-card shadow-2xl"
+                            onMouseMove={handleMouseMove}
+                        >
+                            {renderProgressBar()}
 
-                    <div className="max-w-xl mx-auto mt-12 px-6 fade-in mb-24 relative">
-                        <button onClick={() => setView('dashboard')} className="mb-8 text-xs font-bold uppercase flex items-center gap-2 text-[var(--text-muted)] hover:text-[var(--text-color)] relative z-10"><i className="ph ph-arrow-left"></i> Back</button>
-                        <div className="glass-panel p-8 rounded-xl border border-[var(--panel-border)] relative z-10">
-                            <h2 className="text-2xl font-serif mb-6">New Contract</h2>
-                            <div className="space-y-4">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <button onClick={() => setForm({...form, role: 'buyer'})} className={`p-4 rounded border transition ${form.role === 'buyer' ? 'bg-[var(--text-color)] text-[var(--bg-color)] border-transparent' : 'bg-transparent text-[var(--text-muted)] border-[var(--input-border)]'}`}>Buyer</button>
-                                    <button onClick={() => setForm({...form, role: 'seller'})} className={`p-4 rounded border transition ${form.role === 'seller' ? 'bg-[var(--text-color)] text-[var(--bg-color)] border-transparent' : 'bg-transparent text-[var(--text-muted)] border-[var(--input-border)]'}`}>Seller</button>
-                                </div>
-                                
-                                {/* Counterparty Handle is now FIRST */}
-                                <div className="relative">
-                                    <input type="text" placeholder="Counterparty Handle (e.g. @rahul2391)" className="w-full luxury-input p-4 rounded-lg pl-10" onChange={e => setForm({...form, counterpartyHandle: e.target.value})} />
-                                    <i className="ph ph-at absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"></i>
-                                </div>
+                            <div className="min-h-[300px]">
+                                {/* STEP 1: ROLE SELECTION */}
+                                {step === 1 && (
+                                    <div className="step-slide-enter">
+                                        <h2 className="text-3xl font-serif mb-2">What is your role?</h2>
+                                        <p className="text-[var(--text-muted)] text-sm mb-8">Choose how you will participate in this transaction.</p>
+                                        
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div 
+                                                onClick={() => setForm({...form, role: 'buyer'})}
+                                                className={`cursor-pointer p-6 rounded-xl border-2 transition-all duration-300 hover:scale-[1.02] flex flex-col items-center text-center gap-4 ${form.role === 'buyer' ? 'border-emerald-400 bg-emerald-400/10' : 'border-[var(--input-border)] hover:border-[var(--text-muted)] bg-[var(--input-bg)]'}`}
+                                            >
+                                                <div className="w-16 h-16 rounded-full bg-[var(--bg-color)] flex items-center justify-center text-3xl shadow-lg">
+                                                    <i className="ph-fill ph-shopping-bag-open text-emerald-400"></i>
+                                                </div>
+                                                <div>
+                                                    <h3 className="font-bold text-lg">I am Buying</h3>
+                                                    <p className="text-xs text-[var(--text-muted)] mt-1">I will deposit funds into the vault.</p>
+                                                </div>
+                                            </div>
 
-                                {/* Asset Name is now SECOND */}
-                                <input type="text" placeholder="Asset Name (e.g. Domain, NFT, Code)" className="w-full luxury-input p-4 rounded-lg" onChange={e => setForm({...form, title: e.target.value})} />
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    <CustomSelect label="Network" options={Object.keys(adminWallets)} value={form.currency} onChange={v => setForm({...form, currency: v})} />
-                                    <div className="relative">
-                                        <label className="block text-xs font-bold uppercase text-[var(--text-muted)] mb-3">Value</label>
-                                        <input type="number" className="w-full luxury-input rounded p-4 font-mono pr-12" onChange={e => setForm({...form, amount: e.target.value})} />
-                                        <span className="absolute right-4 top-12 text-[var(--text-muted)] font-bold text-xs">{getSymbol(form.currency)}</span>
+                                            <div 
+                                                onClick={() => setForm({...form, role: 'seller'})}
+                                                className={`cursor-pointer p-6 rounded-xl border-2 transition-all duration-300 hover:scale-[1.02] flex flex-col items-center text-center gap-4 ${form.role === 'seller' ? 'border-blue-400 bg-blue-400/10' : 'border-[var(--input-border)] hover:border-[var(--text-muted)] bg-[var(--input-bg)]'}`}
+                                            >
+                                                <div className="w-16 h-16 rounded-full bg-[var(--bg-color)] flex items-center justify-center text-3xl shadow-lg">
+                                                    <i className="ph-fill ph-package text-blue-400"></i>
+                                                </div>
+                                                <div>
+                                                    <h3 className="font-bold text-lg">I am Selling</h3>
+                                                    <p className="text-xs text-[var(--text-muted)] mt-1">I will deliver assets/services.</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                
-                                <div className="border-t border-[var(--panel-border)] pt-4 mt-2">
-                                    <div className="flex justify-between items-center mb-2">
-                                        <label className="text-[10px] uppercase font-bold text-[var(--text-muted)]">
-                                            {form.role === 'buyer' ? 'Buyer Information / Product Details' : 'Seller Information / Product Details'}
-                                        </label>
-                                    </div>
-                                    <textarea 
-                                        className="w-full luxury-input p-4 rounded-lg h-32 font-mono text-xs leading-relaxed resize-none" 
-                                        placeholder={`Enter details about the ${form.role === 'buyer' ? 'product you are buying' : 'product you are selling'}...`}
-                                        value={form.terms}
-                                        onChange={e => setForm({...form, terms: e.target.value})}
-                                    ></textarea>
-                                </div>
+                                )}
 
-                                <button onClick={handleSubmit} className="glow-button w-full text-center mt-2">Initialize Contract</button>
+                                {/* STEP 2: COUNTERPARTY & ASSET */}
+                                {step === 2 && (
+                                    <div className="step-slide-enter">
+                                        <h2 className="text-3xl font-serif mb-2">Who is the partner?</h2>
+                                        <p className="text-[var(--text-muted)] text-sm mb-8">Identify who you are doing business with.</p>
+                                        
+                                        <div className="space-y-6">
+                                            <div>
+                                                <label className="text-[10px] uppercase font-bold text-[var(--text-muted)] mb-2 block">Counterparty Handle</label>
+                                                <div className="relative group">
+                                                    <i className="ph ph-at absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)] group-focus-within:text-emerald-400 transition-colors"></i>
+                                                    <input 
+                                                        type="text" 
+                                                        autoFocus
+                                                        value={form.counterpartyHandle}
+                                                        placeholder="username123" 
+                                                        className="w-full tech-input p-4 rounded-xl pl-10 text-lg font-mono" 
+                                                        onChange={e => setForm({...form, counterpartyHandle: e.target.value})} 
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label className="text-[10px] uppercase font-bold text-[var(--text-muted)] mb-2 block">Asset / Project Name</label>
+                                                <input 
+                                                    type="text" 
+                                                    value={form.title}
+                                                    placeholder="e.g. Domain Name, 3D Model, Consultancy" 
+                                                    className="w-full tech-input p-4 rounded-xl text-lg" 
+                                                    onChange={e => setForm({...form, title: e.target.value})} 
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* STEP 3: FINANCIALS & TERMS */}
+                                {step === 3 && (
+                                    <div className="step-slide-enter">
+                                        <h2 className="text-3xl font-serif mb-2">Contract Value</h2>
+                                        <p className="text-[var(--text-muted)] text-sm mb-8">Set the terms and amount to be secured.</p>
+                                        
+                                        <div className="grid grid-cols-5 gap-4 mb-6">
+                                            <div className="col-span-2">
+                                                 <CustomSelect label="Currency" options={Object.keys(adminWallets)} value={form.currency} onChange={v => setForm({...form, currency: v})} />
+                                            </div>
+                                            <div className="col-span-3">
+                                                <label className="block text-xs font-bold uppercase text-[var(--text-muted)] mb-3">Amount</label>
+                                                <div className="relative">
+                                                    <input 
+                                                        type="number" 
+                                                        value={form.amount}
+                                                        className="w-full tech-input rounded p-4 font-mono text-xl pr-12" 
+                                                        placeholder="0.00"
+                                                        onChange={e => setForm({...form, amount: e.target.value})} 
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label className="text-[10px] uppercase font-bold text-[var(--text-muted)] mb-2 block">Terms of Agreement (Optional)</label>
+                                            <textarea 
+                                                className="w-full tech-input p-4 rounded-xl h-24 font-mono text-xs leading-relaxed resize-none" 
+                                                placeholder="Describe the delivery conditions..."
+                                                value={form.terms}
+                                                onChange={e => setForm({...form, terms: e.target.value})}
+                                            ></textarea>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* NAVIGATION BUTTONS */}
+                            <div className="flex justify-between items-center mt-8 pt-6 border-t border-[var(--panel-border)]">
+                                {step > 1 ? (
+                                    <button onClick={() => setStep(step - 1)} className="text-xs font-bold uppercase text-[var(--text-muted)] hover:text-[var(--text-color)] px-4 py-2">Back</button>
+                                ) : <div></div>}
+                                
+                                {step < 3 ? (
+                                    <button onClick={nextStep} className="glow-button flex items-center gap-2">
+                                        Next Step <i className="ph-bold ph-arrow-right"></i>
+                                    </button>
+                                ) : (
+                                    <button onClick={handleSubmit} className="glow-button bg-emerald-500 border-emerald-500 text-white shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                                        Create Contract
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -1271,10 +1514,39 @@
             const [showCopyTooltip, setShowCopyTooltip] = useState(false);
 
             const handleCopyHandle = () => {
-                if (navigator.clipboard && currentUser?.uniqueHandle) {
-                    navigator.clipboard.writeText(currentUser.uniqueHandle);
-                    setShowCopyTooltip(true);
-                    setTimeout(() => setShowCopyTooltip(false), 2000);
+                const text = currentUser?.uniqueHandle;
+                if (!text) return;
+
+                // Fallback copy function
+                const fallbackCopy = () => {
+                    try {
+                        const t = document.createElement("textarea");
+                        t.value = text;
+                        t.style.position = "fixed"; // Prevent scrolling to bottom
+                        t.style.left = "-9999px";
+                        document.body.appendChild(t);
+                        t.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(t);
+                        setShowCopyTooltip(true);
+                        setTimeout(() => setShowCopyTooltip(false), 2000);
+                    } catch (err) {
+                        console.error('Fallback copy failed', err);
+                    }
+                };
+
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(text)
+                        .then(() => {
+                            setShowCopyTooltip(true);
+                            setTimeout(() => setShowCopyTooltip(false), 2000);
+                        })
+                        .catch(err => {
+                            console.warn("Clipboard API failed, trying fallback", err);
+                            fallbackCopy();
+                        });
+                } else {
+                    fallbackCopy();
                 }
             };
 
@@ -1326,7 +1598,7 @@
             const [isAdminMode, setIsAdminMode] = useState(false);
             const [isCoinAnimating, setIsCoinAnimating] = useState(false);
             const [firebaseUser, setFirebaseUser] = useState(null);
-            const [activeChatTx, setActiveChatTx] = useState(null); // New state for chat
+            const [activeChatTx, setActiveChatTx] = useState(null); 
 
             const showNotification = (msg, type='success') => { setToast({msg, type}); setTimeout(() => setToast(null), 3000); };
 
@@ -1393,7 +1665,7 @@
                     {toast && <div className="fixed top-4 left-1/2 -translate-x-1/2 bg-[var(--btn-bg)] text-[var(--btn-text)] px-6 py-2 rounded-full z-50 font-bold border border-[var(--panel-border)]">{toast.msg}</div>}
                     <Navbar setView={setView} currentUser={user} onLogout={handleLogout} />
                     
-                    <AnimationDebugBox setProcessingAction={setProcessingAction} />
+                    {/* AnimationDebugBox removed */}
                     
                     {view === 'landing' && <LandingPage setView={setView} />}
                     {view === 'dashboard' && <Dashboard transactions={transactions} setView={setView} handleAction={(tx, type) => type === 'deposit' ? setShowDepositModal(tx) : setShowDeliverModal(tx)} handleChat={setActiveChatTx} handleAI={handleAI} currentUser={user} />}
