@@ -23,26 +23,25 @@
 
     <style>
         /* LUXURY THEME OVERRIDES */
-        /* DEFAULT IS NOW LIGHT THEME */
+        /* DEFAULT IS NOW LIGHT THEME - OPTIMIZED VISIBILITY */
         :root {
             --bg-color: #f8fafc;
             --text-color: #0f172a;
             --text-muted: #64748b;
             
             /* Glass Card Vars (Light) */
-            --glass-bg: rgba(255, 255, 255, 0.75);
-            /* Darker border so cards are visible against white background */
-            --glass-border: rgba(0, 0, 0, 0.1); 
+            --glass-bg: rgba(255, 255, 255, 0.85); /* More opaque for readability */
+            --glass-border: rgba(0, 0, 0, 0.1); /* Darker border for contrast */
             --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
             --glass-blur: blur(24px);
             
-            /* Premium Auth Glass (Light) - Visible Milky Glass */
-            --auth-glass-bg: rgba(255, 255, 255, 0.85); 
+            /* Premium Auth Glass (Light) - Milky & Visible */
+            --auth-glass-bg: rgba(255, 255, 255, 0.9); 
             --auth-glass-border: rgba(0, 0, 0, 0.1);
-            --auth-glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --auth-glass-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
 
             --input-bg: rgba(255, 255, 255, 0.6);
-            --input-border: rgba(0, 0, 0, 0.15);
+            --input-border: rgba(0, 0, 0, 0.2); /* Visible borders */
             --accent-glow: rgba(0, 0, 0, 0.05);
             
             --btn-bg: #0f172a;
@@ -53,11 +52,11 @@
             --toggle-icon: #0f172a;
             
             /* Panel Backgrounds for Navbar/Chat */
-            --panel-bg: rgba(255, 255, 255, 0.9);
+            --panel-bg: rgba(255, 255, 255, 0.95);
             --panel-border: rgba(0,0,0,0.1);
 
             /* Ticker Colors (Light) */
-            --ticker-bg: rgba(255, 255, 255, 0.8);
+            --ticker-bg: rgba(255, 255, 255, 0.9);
             --ticker-border: rgba(15, 23, 42, 0.1);
             --ticker-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
 
@@ -263,15 +262,14 @@
             top: 0; left: 0; width: 100%; height: 100%;
             overflow: hidden;
             z-index: 0;
-            /* FIXED: Increased Opacity for Visibility in Light Mode */
+            /* High opacity + Dark Text color ensures visibility in Light Mode */
             opacity: 0.5; 
         }
         .data-string {
             position: absolute;
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
-            /* FIXED: Use text-color (Dark Blue/Black in Light Mode) for visibility */
-            color: var(--text-color); 
+            color: var(--text-color); /* Adaptive color */
             white-space: nowrap;
             user-select: none;
             will-change: transform, opacity;
@@ -1508,17 +1506,28 @@
 
         const Navbar = ({ setView, currentUser, onLogout }) => {
             const [showCopyTooltip, setShowCopyTooltip] = useState(false);
+            const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+            useEffect(() => {
+                const handleOnline = () => setIsOnline(true);
+                const handleOffline = () => setIsOnline(false);
+                window.addEventListener('online', handleOnline);
+                window.addEventListener('offline', handleOffline);
+                return () => {
+                    window.removeEventListener('online', handleOnline);
+                    window.removeEventListener('offline', handleOffline);
+                };
+            }, []);
 
             const handleCopyHandle = () => {
                 const text = currentUser?.uniqueHandle;
                 if (!text) return;
 
-                // Fallback copy function
                 const fallbackCopy = () => {
                     try {
                         const t = document.createElement("textarea");
                         t.value = text;
-                        t.style.position = "fixed"; // Prevent scrolling to bottom
+                        t.style.position = "fixed"; 
                         t.style.left = "-9999px";
                         document.body.appendChild(t);
                         t.select();
@@ -1551,6 +1560,10 @@
                     <div className="flex items-center gap-3 cursor-pointer group" onClick={() => setView('landing')}>
                         <div className="w-10 h-10 bg-[var(--text-color)] rounded flex items-center justify-center text-[var(--bg-color)] shadow-white"><i className="ph ph-shield-check text-2xl"></i></div>
                         <span className="text-2xl font-serif font-medium tracking-wide text-[var(--text-color)]">Shieldscrow</span>
+                        <div className="flex items-center gap-2 ml-4 px-3 py-1 rounded-full glass-panel border border-[var(--panel-border)]">
+                            <div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></div>
+                            <span className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">{isOnline ? 'Mainnet Active' : 'Offline'}</span>
+                        </div>
                     </div>
                     <div className="flex items-center gap-4 md:gap-8 mt-4 md:mt-0">
                         <ThemeToggle />
@@ -1571,15 +1584,6 @@
                 </nav>
             );
         };
-
-        const AnimationDebugBox = ({ setProcessingAction }) => (
-            <div className="fixed bottom-24 right-6 z-50 glass-panel p-4 rounded-lg flex flex-col gap-2 w-32 opacity-50 hover:opacity-100 transition-opacity">
-                <div className="text-[10px] font-bold uppercase text-[var(--text-muted)] text-center mb-1">Anim Debug</div>
-                <button onClick={() => { setProcessingAction({ type: 'upload', text: 'Encrypting...', status: 'uploading', progress: 0 }); let p = 0; const i = setInterval(() => { p += 5; setProcessingAction(prev => ({...prev, progress: p})); if(p >= 100) { clearInterval(i); setTimeout(() => setProcessingAction(null), 500); } }, 100); }} className="bg-blue-900/50 text-blue-400 text-[10px] px-2 py-1 rounded border border-blue-500/30 hover:bg-blue-900">Upload</button>
-                <button onClick={() => { setProcessingAction({ type: 'deposit', text: 'Verifying...', status: 'processing' }); setTimeout(() => setProcessingAction(null), 3000); }} className="bg-yellow-900/50 text-yellow-400 text-[10px] px-2 py-1 rounded border border-yellow-500/30 hover:bg-yellow-900">Process</button>
-                <button onClick={() => { setProcessingAction({ type: 'verify', text: 'Access Granted', status: 'success' }); setTimeout(() => setProcessingAction(null), 2000); }} className="bg-green-900/50 text-green-400 text-[10px] px-2 py-1 rounded border border-green-500/30 hover:bg-green-900">Success</button>
-            </div>
-        );
 
         const App = () => {
             const [view, setView] = useState('auth');
@@ -1674,7 +1678,7 @@
                     {/* RENDER CHAT WINDOW IF ACTIVE */}
                     {activeChatTx && <ChatWindow tx={activeChatTx} currentUser={user} onClose={() => setActiveChatTx(null)} />}
 
-                    {user && <div className="fixed bottom-8 left-1/2 -translate-x-1/2 glass-panel p-1 rounded-full flex gap-1 z-50"><button onClick={() => {setIsAdminMode(false); setView('dashboard');}} className={`px-6 py-2 rounded-full text-[10px] font-bold uppercase ${!isAdminMode ? 'bg-[var(--btn-bg)] text-[var(--btn-text)]' : 'text-[var(--text-muted)]'}`}>Client</button><button onClick={() => {setIsAdminMode(true); setView('admin');}} className={`px-6 py-2 rounded-full text-[10px] font-bold uppercase ${isAdminMode ? 'bg-[var(--btn-bg)] text-[var(--btn-text)]' : 'text-[var(--text-muted)]'}`}>Admin</button></div>}
+                    {user && user.role === 'admin' && <div className="fixed bottom-8 left-1/2 -translate-x-1/2 glass-panel p-1 rounded-full flex gap-1 z-50"><button onClick={() => {setIsAdminMode(false); setView('dashboard');}} className={`px-6 py-2 rounded-full text-[10px] font-bold uppercase ${!isAdminMode ? 'bg-[var(--btn-bg)] text-[var(--btn-text)]' : 'text-[var(--text-muted)]'}`}>Client</button><button onClick={() => {setIsAdminMode(true); setView('admin');}} className={`px-6 py-2 rounded-full text-[10px] font-bold uppercase ${isAdminMode ? 'bg-[var(--btn-bg)] text-[var(--btn-text)]' : 'text-[var(--text-muted)]'}`}>Admin</button></div>}
                 </div>
             );
         };
