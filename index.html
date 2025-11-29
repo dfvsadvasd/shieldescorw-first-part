@@ -30,7 +30,7 @@
             --text-muted: #64748b;
             
             /* Glass Card Vars (Light) */
-            --glass-bg: rgba(255, 255, 255, 0.85); /* More opaque for readability */
+            --glass-bg: rgba(255, 255, 255, 0.85); /* Opaque for readability */
             --glass-border: rgba(0, 0, 0, 0.1); /* Darker border for contrast */
             --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
             --glass-blur: blur(24px);
@@ -262,14 +262,14 @@
             top: 0; left: 0; width: 100%; height: 100%;
             overflow: hidden;
             z-index: 0;
-            /* High opacity + Dark Text color ensures visibility in Light Mode */
-            opacity: 0.5; 
+            opacity: 0.5; /* Visible enough to see, subtle enough to not distract */
         }
         .data-string {
             position: absolute;
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
-            color: var(--text-color); /* Adaptive color */
+            /* Use Main Text Color so it's visible in both Dark (White) and Light (Dark Blue) modes */
+            color: var(--text-color); 
             white-space: nowrap;
             user-select: none;
             will-change: transform, opacity;
