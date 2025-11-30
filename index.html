@@ -23,24 +23,25 @@
 
     <style>
         /* LUXURY THEME OVERRIDES */
+        /* DEFAULT IS NOW LIGHT THEME - OPTIMIZED VISIBILITY */
         :root {
             --bg-color: #f8fafc;
             --text-color: #0f172a;
             --text-muted: #64748b;
             
-            /* Glass Card Vars */
-            --glass-bg: rgba(255, 255, 255, 0.85); 
-            --glass-border: rgba(0, 0, 0, 0.1); 
+            /* Glass Card Vars (Light) */
+            --glass-bg: rgba(255, 255, 255, 0.85); /* Opaque for readability */
+            --glass-border: rgba(0, 0, 0, 0.1); /* Darker border for contrast */
             --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
             --glass-blur: blur(24px);
             
-            /* Premium Auth Glass */
+            /* Premium Auth Glass (Light) - Milky & Visible */
             --auth-glass-bg: rgba(255, 255, 255, 0.9); 
             --auth-glass-border: rgba(0, 0, 0, 0.1);
             --auth-glass-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
 
             --input-bg: rgba(255, 255, 255, 0.6);
-            --input-border: rgba(0, 0, 0, 0.2);
+            --input-border: rgba(0, 0, 0, 0.2); /* Visible borders */
             --accent-glow: rgba(0, 0, 0, 0.05);
             
             --btn-bg: #0f172a;
@@ -50,36 +51,40 @@
             --scrollbar-thumb: #ccc;
             --toggle-icon: #0f172a;
             
+            /* Panel Backgrounds for Navbar/Chat */
             --panel-bg: rgba(255, 255, 255, 0.95);
             --panel-border: rgba(0,0,0,0.1);
 
-            /* Ticker Colors */
+            /* Ticker Colors (Light) */
             --ticker-bg: rgba(255, 255, 255, 0.9);
             --ticker-border: rgba(15, 23, 42, 0.1);
             --ticker-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
 
-             /* Aurora Gradient Colors */
+             /* Aurora Gradient Colors (Light) */
             --aurora-1: #ffc4dd; 
             --aurora-2: #c4e0ff;
             --aurora-3: #e8dff5;
 
-            /* Auth Page Specifics */
+            /* Auth Page Specifics (Light) */
             --auth-text: #0f172a;
             --auth-muted: #64748b;
             --auth-btn-bg: #0f172a;
             --auth-btn-text: #ffffff;
         }
 
+        /* DARK THEME OVERRIDES */
         [data-theme="dark"] {
             --bg-color: #050505;
             --text-color: #f5f5f5;
             --text-muted: #a3a3a3;
 
+            /* Glass Card Vars (Dark) */
             --glass-bg: rgba(20, 20, 20, 0.4);
             --glass-border: rgba(255, 255, 255, 0.08);
             --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             --glass-blur: blur(30px);
 
+            /* Premium Auth Glass (Dark) */
             --auth-glass-bg: rgba(255, 255, 255, 0.02);
             --auth-glass-border: rgba(255, 255, 255, 0.1);
             --auth-glass-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
@@ -98,14 +103,17 @@
             --panel-bg: rgba(20, 20, 20, 0.95);
             --panel-border: rgba(255, 255, 255, 0.1);
 
+            /* Ticker Colors (Dark) */
             --ticker-bg: rgba(20, 20, 20, 0.8);
             --ticker-border: rgba(255, 255, 255, 0.1);
             --ticker-shadow: 0 0 20px rgba(99, 102, 241, 0.1);
 
+             /* Aurora Gradient Colors (Dark) */
             --aurora-1: #2e1065; 
             --aurora-2: #0f172a; 
             --aurora-3: #172554;
             
+            /* Auth Page Specifics (Dark) */
             --auth-text: #f5f5f5;
             --auth-muted: #a3a3a3;
             --auth-btn-bg: #ffffff;
@@ -254,12 +262,13 @@
             top: 0; left: 0; width: 100%; height: 100%;
             overflow: hidden;
             z-index: 0;
-            opacity: 0.5; 
+            opacity: 0.5; /* Good visibility */
         }
         .data-string {
             position: absolute;
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
+            /* Use Main Text Color so it's visible in both Dark (White) and Light (Dark Blue) modes */
             color: var(--text-color); 
             white-space: nowrap;
             user-select: none;
@@ -310,7 +319,7 @@
             position: relative;
             width: auto;
             display: inline-block;
-            overflow: hidden; 
+            overflow: hidden; /* For shine effect */
             transition: all 0.3s ease;
         }
         
@@ -351,7 +360,7 @@
             transform: rotate(180deg) scale(0.8);
         }
 
-        /* COIN TRANSITION STYLES */
+        /* COIN TRANSITION STYLES (60FPS Optimized) */
         .coin-transition-container {
             position: fixed;
             top: 0;
@@ -371,6 +380,7 @@
             opacity: 1;
         }
         
+        /* Ensure coin disappears when not animating to avoid glitches */
         .coin-transition-container:not(.animating) {
             display: none;
         }
@@ -381,15 +391,17 @@
         }
 
         .gold-coin {
-            width: 350px; 
+            width: 350px; /* Bigger Size */
             height: 350px;
             background: radial-gradient(ellipse at center, #ffd700 0%, #b8860b 100%);
             border-radius: 50%;
-            box-shadow: 0 0 60px rgba(255, 215, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.5);
+            box-shadow: 
+                0 0 60px rgba(255, 215, 0, 0.6), 
+                inset 0 0 20px rgba(255, 255, 255, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 160px; 
+            font-size: 160px; /* Bigger Icon */
             color: #74540d;
             border: 8px solid #DAA520;
             will-change: transform;
@@ -403,6 +415,7 @@
             opacity: 0.6;
         }
         
+        /* Slower, smoother animation */
         .animating .coin-mover {
             animation: slideAcross 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
         }
@@ -517,7 +530,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, updateDoc, doc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, updateDoc, doc, onSnapshot, getDocs, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Attach modules to window so the Babel script can see them
         window.FirebaseModules = {
@@ -532,7 +545,9 @@
             updateDoc,
             doc,
             onSnapshot,
-            getDocs
+            getDocs,
+            query,
+            where
         };
     </script>
 </head>
@@ -543,6 +558,7 @@
     <script type="text/babel">
         const { useState, useEffect, useRef, useMemo } = React;
 
+        // Access Firebase modules from the global window object
         const { 
             initializeApp, 
             getAuth, 
@@ -555,10 +571,13 @@
             updateDoc, 
             doc, 
             onSnapshot, 
-            getDocs 
+            getDocs,
+            query,
+            where
         } = window.FirebaseModules;
 
-        const AUTO_REFUND_TIME_MS = 2 * 60 * 60 * 1000; 
+        // --- CONFIGURATION ---
+        const AUTO_REFUND_TIME_MS = 2 * 60 * 60 * 1000; // 2 HOURS
         
         const DEFAULT_WALLETS = {
             "Ethereum (ETH)": "0x8e705Ee7E8d22538cDbB25C77881994fb722a0fa",
@@ -568,6 +587,7 @@
             "Polygon (MATIC)": "0x8e705Ee7E8d22538cDbB25C77881994fb722a0fa"
         };
 
+        // --- FIREBASE INIT ---
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         
@@ -580,6 +600,7 @@
             console.warn("Firebase config not found.");
         }
 
+        // --- DATABASE HELPERS (Async) ---
         const dbHelper = {
             registerUser: async (userData) => {
                 if (!firestore) return null;
@@ -597,10 +618,27 @@
             authenticateUser: async (name, password) => {
                 if (!firestore) return null;
                 try {
-                    const snap = await getDocs(collection(firestore, 'artifacts', appId, 'public', 'data', 'users'));
-                    const users = snap.docs.map(d => d.data());
-                    return users.find(u => u.name === name && u.password === password);
+                    // Optimized query for exact name/password match
+                    const q = query(collection(firestore, 'artifacts', appId, 'public', 'data', 'users'), where("name", "==", name), where("password", "==", password));
+                    const querySnapshot = await getDocs(q);
+                    
+                    if (!querySnapshot.empty) {
+                        return querySnapshot.docs[0].data();
+                    } else {
+                        // Fallback: Client-side filtering if case sensitivity is an issue (or use lowercase name field)
+                         const snap = await getDocs(collection(firestore, 'artifacts', appId, 'public', 'data', 'users'));
+                         const users = snap.docs.map(d => d.data());
+                         return users.find(u => u.name.toLowerCase() === name.toLowerCase() && u.password === password);
+                    }
                 } catch(e) { console.error(e); return null; }
+            },
+            checkHandleExists: async (handle) => {
+                if (!firestore) return false;
+                try {
+                    const q = query(collection(firestore, 'artifacts', appId, 'public', 'data', 'users'), where("uniqueHandle", "==", handle));
+                    const querySnapshot = await getDocs(q);
+                    return !querySnapshot.empty;
+                } catch(e) { console.error(e); return false; }
             },
             getAllUsers: async () => {
                 if (!firestore) return [];
@@ -648,17 +686,24 @@
                 width: `${2 + Math.random() * 4}px`,
                 height: `${2 + Math.random() * 4}px`,
             })), []);
-            return (<div className="blockchain-bg">{nodes.map((style, i) => <div key={i} className="node" style={style} />)}</div>);
+
+            return (
+                <div className="blockchain-bg">
+                    {nodes.map((style, i) => <div key={i} className="node" style={style} />)}
+                </div>
+            );
         };
 
+        // --- NEW CRYPTO BACKGROUND COMPONENT (For Create Page) ---
         const CryptoBackground = () => {
             const symbols = [
-                { val: 'ph-currency-btc', color: '#F7931A' },
-                { val: 'ph-currency-eth', color: '#627EEA' },
-                { val: 'ph-currency-dollar', color: '#26A17B' },
-                { val: 'ph-coins', color: '#CCAC00' },
-                { val: 'ph-wallet', color: '#A020F0' },
+                { val: 'ph-currency-btc', color: '#F7931A' }, // Bitcoin Orange
+                { val: 'ph-currency-eth', color: '#627EEA' }, // Ethereum Blue
+                { val: 'ph-currency-dollar', color: '#26A17B' }, // USDT Green
+                { val: 'ph-coins', color: '#CCAC00' }, // Generic Gold
+                { val: 'ph-wallet', color: '#A020F0' }, // Wallet Purple
             ];
+
             const items = useMemo(() => Array.from({ length: 25 }).map((_, i) => {
                 const symbol = symbols[i % symbols.length];
                 return {
@@ -670,6 +715,7 @@
                     opacity: 0.6 + Math.random() * 0.3 
                 };
             }), []);
+
             return (
                 <div className="crypto-bg-container">
                     {items.map((item, i) => (
@@ -681,17 +727,28 @@
                             color: item.color,
                             opacity: item.opacity,
                             '--target-opacity': item.opacity
-                        }}><i className={`ph-fill ${item.val}`}></i></div>
+                        }}>
+                            <i className={`ph-fill ${item.val}`}></i>
+                        </div>
                     ))}
                 </div>
             );
         };
 
+        // --- REVERTED: FIXED STRINGS DATA STREAM (Calmer background) ---
         const CryptoDataBackground = () => {
             const strings = [
-                "0x71C7656EC7ab88b098defB751B7401B5f6d8976F", "bc1qjlpa9z6lehkfyqltmz7jf494uek02hn3cppsm7", "0x8e705Ee7E8d22538cDbB25C77881994fb722a0fa", "9372c360-3238-4220-ad68-0775d0342555",
-                "CONNECTING_TO_MAINNET...", "VERIFYING_BLOCK_HASH...", "SIGNING_TRANSACTION...", "ENCRYPTING_PAYLOAD...", "ESTABLISHING_SECURE_TUNNEL..."
+                "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
+                "bc1qjlpa9z6lehkfyqltmz7jf494uek02hn3cppsm7",
+                "0x8e705Ee7E8d22538cDbB25C77881994fb722a0fa",
+                "9372c360-3238-4220-ad68-0775d0342555",
+                "CONNECTING_TO_MAINNET...",
+                "VERIFYING_BLOCK_HASH...",
+                "SIGNING_TRANSACTION...",
+                "ENCRYPTING_PAYLOAD...",
+                "ESTABLISHING_SECURE_TUNNEL...",
             ];
+
             const items = useMemo(() => Array.from({ length: 40 }).map((_, i) => {
                 const str = strings[Math.floor(Math.random() * strings.length)];
                 return {
@@ -704,6 +761,7 @@
                     my: `${(Math.random() - 0.5) * 200}px`
                 };
             }), []);
+
             return (
                 <div className="data-stream-container">
                     {items.map((item, i) => (
@@ -714,16 +772,24 @@
                             animationDelay: item.delay,
                             '--mx': item.mx,
                             '--my': item.my
-                        }}>{item.val}</div>
+                        }}>
+                            {item.val}
+                        </div>
                     ))}
+                    {/* Add some random floating icons for the "random things" feel */}
                     <div className="absolute top-1/4 left-1/4 opacity-10 animate-pulse text-6xl text-[var(--text-color)]"><i className="ph ph-currency-btc"></i></div>
                     <div className="absolute bottom-1/3 right-1/4 opacity-10 animate-bounce text-6xl text-[var(--text-color)]"><i className="ph ph-currency-eth"></i></div>
                 </div>
             );
         };
 
+        // --- AURORA BACKGROUND COMPONENT ---
         const AuroraBackground = () => (
-            <div className="aurora-container"><div className="aurora-blob blob-1"></div><div className="aurora-blob blob-2"></div><div className="aurora-blob blob-3"></div></div>
+            <div className="aurora-container">
+                <div className="aurora-blob blob-1"></div>
+                <div className="aurora-blob blob-2"></div>
+                <div className="aurora-blob blob-3"></div>
+            </div>
         );
 
         const ThemeToggle = () => {
@@ -744,10 +810,19 @@
             );
         };
 
+        // --- LIVE ACTIVITY TICKER COMPONENT (SCRAMBLE EFFECT) ---
         const LiveActivityTicker = () => {
             const [activity, setActivity] = useState(null);
             const [displayedText, setDisplayedText] = useState("");
-            const NAMES = ["Rahul", "Priya", "Amit", "Sneha", "Vikram", "Anjali", "Rohan", "Meera", "Suresh", "Kavita", "Ahmed", "Fatima", "Bilal", "Zainab", "Omar", "Ayesha", "Hassan", "Sana", "Yusuf", "Hira", "John", "Sarah", "Mike", "Emily", "David", "Jessica", "Robert", "Olivia", "Wei", "Li", "Hiro", "Yuki", "Jin", "Soo", "Carlos", "Maria", "Jose", "Sofia"];
+            
+            const NAMES = [
+                "Rahul", "Priya", "Amit", "Sneha", "Vikram", "Anjali", "Rohan", "Meera", "Suresh", "Kavita",
+                "Ahmed", "Fatima", "Bilal", "Zainab", "Omar", "Ayesha", "Hassan", "Sana", "Yusuf", "Hira",
+                "John", "Sarah", "Mike", "Emily", "David", "Jessica", "Robert", "Olivia",
+                "Wei", "Li", "Hiro", "Yuki", "Jin", "Soo",
+                "Carlos", "Maria", "Jose", "Sofia"
+            ];
+            
             const ACTIONS = ["secured", "released", "deposited"];
             const ASSETS = ["BTC", "ETH", "USDT", "SOL", "USDC"];
 
@@ -756,13 +831,16 @@
                 const targetText = activity.text;
                 let iterations = 0;
                 const interval = setInterval(() => {
-                    setDisplayedText(targetText.split("").map((letter, index) => {
+                    setDisplayedText(targetText.split("")
+                        .map((letter, index) => {
                             if(index < iterations) return targetText[index];
                             return "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()"[Math.floor(Math.random() * 46)];
-                        }).join("")
+                        })
+                        .join("")
                     );
+                    
                     if(iterations >= targetText.length) clearInterval(interval);
-                    iterations += 1/2;
+                    iterations += 1/2; // Speed of decode
                 }, 30);
                 return () => clearInterval(interval);
             }, [activity]);
@@ -772,26 +850,34 @@
                     const sender = NAMES[Math.floor(Math.random() * NAMES.length)];
                     let receiver = NAMES[Math.floor(Math.random() * NAMES.length)];
                     while(receiver === sender) receiver = NAMES[Math.floor(Math.random() * NAMES.length)]; 
+                    
                     const amount = (Math.random() * 2 + 0.1).toFixed(4);
                     const asset = ASSETS[Math.floor(Math.random() * ASSETS.length)];
                     const action = ACTIONS[Math.floor(Math.random() * ACTIONS.length)];
+                    
                     let text = "";
                     if (action === "secured") text = `${sender} secured ${amount} ${asset} for ${receiver}`;
                     else if (action === "released") text = `Escrow released ${amount} ${asset} to ${receiver}`;
                     else text = `${sender} deposited ${amount} ${asset} into Vault`;
+
                     setActivity({ id: Date.now(), text, type: action });
                 };
-                generateActivity();
+
+                generateActivity(); // Initial run
                 const interval = setInterval(generateActivity, 6000); 
                 return () => clearInterval(interval);
             }, []);
 
             if (!activity) return null;
+
             return (
                 <div className="w-full flex justify-center mb-6">
                     <div key={activity.id} className="hologram-entry hologram-ticker px-8 py-3 flex items-center gap-4">
                         <div className={`w-2 h-2 rounded-full ${activity.type === 'secured' ? 'bg-blue-400' : activity.type === 'released' ? 'bg-green-400' : 'bg-yellow-400'} animate-pulse shadow-[0_0_10px_currentColor]`}></div>
-                        <span className="text-xs font-mono text-[var(--text-color)] tracking-widest"><span className="font-bold text-[var(--text-muted)] mr-2 opacity-50">LIVE_FEED:</span>{displayedText}</span>
+                        <span className="text-xs font-mono text-[var(--text-color)] tracking-widest">
+                            <span className="font-bold text-[var(--text-muted)] mr-2 opacity-50">LIVE_FEED:</span>
+                            {displayedText}
+                        </span>
                     </div>
                 </div>
             );
@@ -819,24 +905,70 @@
 
         const Logo = ({ size = "md" }) => {
             const sizeClasses = size === "lg" ? "w-32 h-32" : "w-12 h-12";
+            const fontSize = size === "lg" ? "text-5xl" : "text-xl";
+            
             return (
                 <div className={`${sizeClasses} relative flex items-center justify-center`}>
+                    {/* Fallback Logo (Code Generated) */}
                     <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-transparent">
-                        <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_10px_rgba(255,215,0,0.3)]"><defs><linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#FDB931" /><stop offset="50%" stopColor="#FFD700" /><stop offset="100%" stopColor="#B8860B" /></linearGradient></defs><path d="M50 5 L90 25 L90 55 Q50 95 10 55 L10 25 Z" fill="none" stroke="url(#goldGradient)" strokeWidth="3" /><path d="M50 12 L83 28 L83 55 Q50 88 17 55 L17 28 Z" fill="none" stroke="url(#goldGradient)" strokeWidth="1" opacity="0.7" /><text x="50" y="62" textAnchor="middle" fill="url(#goldGradient)" fontFamily="serif" fontSize="35" fontWeight="bold">SE</text></svg>
+                        <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_10px_rgba(255,215,0,0.3)]">
+                            <defs>
+                                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stopColor="#FDB931" />
+                                    <stop offset="50%" stopColor="#FFD700" />
+                                    <stop offset="100%" stopColor="#B8860B" />
+                                </linearGradient>
+                            </defs>
+                            {/* Shield Outline */}
+                            <path d="M50 5 L90 25 L90 55 Q50 95 10 55 L10 25 Z" fill="none" stroke="url(#goldGradient)" strokeWidth="3" />
+                            {/* Inner Border */}
+                            <path d="M50 12 L83 28 L83 55 Q50 88 17 55 L17 28 Z" fill="none" stroke="url(#goldGradient)" strokeWidth="1" opacity="0.7" />
+                            {/* Text */}
+                            <text x="50" y="62" textAnchor="middle" fill="url(#goldGradient)" fontFamily="serif" fontSize="35" fontWeight="bold">SE</text>
+                        </svg>
                     </div>
-                    <img src="se logo.jpg" className="absolute inset-0 w-full h-full object-contain z-10" onError={(e) => e.target.style.display = 'none'} alt="Shieldscrow" />
+                    {/* User Uploaded Logo - overlays if exists */}
+                    <img 
+                        src="se logo.jpg" 
+                        className="absolute inset-0 w-full h-full object-contain z-10" 
+                        onError={(e) => e.target.style.display = 'none'} 
+                        alt="Shieldscrow" 
+                    />
                 </div>
             );
         };
 
         const CoinTransition = ({ isActive }) => (
-            <div className={`coin-transition-container ${isActive ? 'animating' : ''}`}><div className="coin-mover"><div className="gold-coin"><i className="ph-fill ph-currency-btc"></i></div></div></div>
+            <div className={`coin-transition-container ${isActive ? 'animating' : ''}`}>
+                <div className="coin-mover">
+                    <div className="gold-coin"><i className="ph-fill ph-currency-btc"></i></div>
+                </div>
+            </div>
         );
 
         const ActionOverlay = ({ type, text, status, progress }) => (
             <div className="fixed inset-0 bg-black/95 z-[200] flex flex-col items-center justify-center modal-enter">
                 <div className="relative w-48 h-48 mb-8 flex items-center justify-center">
-                    {status === 'processing' || status === 'uploading' ? (<><div className="absolute inset-0 border-2 border-white/10 rounded-full pulse-ring"></div><div className="absolute inset-4 border border-white/20 rounded-full"></div><div className="text-6xl text-white icon-bounce">{type === 'deposit' && <i className="ph ph-coins text-yellow-400"></i>}{type === 'deliver' && <i className="ph ph-paper-plane-tilt text-blue-400"></i>}{type === 'verify' && <i className="ph ph-shield-check text-green-400"></i>}{type === 'ai' && <i className="ph ph-sparkle text-purple-400"></i>}{type === 'upload' && <i className="ph ph-upload-simple text-blue-400"></i>}</div></>) : (<div className="flex items-center justify-center"><svg className="checkmark-circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle className="checkmark-circle" cx="26" cy="26" r="25" fill="none"/><path className="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg></div>)}
+                    {status === 'processing' || status === 'uploading' ? (
+                        <>
+                            <div className="absolute inset-0 border-2 border-white/10 rounded-full pulse-ring"></div>
+                            <div className="absolute inset-4 border border-white/20 rounded-full"></div>
+                            <div className="text-6xl text-white icon-bounce">
+                                {type === 'deposit' && <i className="ph ph-coins text-yellow-400"></i>}
+                                {type === 'deliver' && <i className="ph ph-paper-plane-tilt text-blue-400"></i>}
+                                {type === 'verify' && <i className="ph ph-shield-check text-green-400"></i>}
+                                {type === 'ai' && <i className="ph ph-sparkle text-purple-400"></i>}
+                                {type === 'upload' && <i className="ph ph-upload-simple text-blue-400"></i>}
+                            </div>
+                        </>
+                    ) : (
+                        <div className="flex items-center justify-center">
+                            <svg className="checkmark-circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                <circle className="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                                <path className="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                            </svg>
+                        </div>
+                    )}
                 </div>
                 <h2 className="text-2xl font-serif text-white tracking-[0.2em] uppercase mb-2 text-center px-4">{text}</h2>
                 {status === 'uploading' && <div className="w-64 mt-6"><div className="w-full h-1 bg-white/10 rounded-full overflow-hidden"><div className="h-full bg-emerald-400 transition-all duration-300 ease-out" style={{ width: `${progress}%` }}></div></div><div className="text-center mt-3 font-mono text-emerald-400 text-xs tracking-widest">{progress < 100 ? `${Math.round(progress)}%` : 'COMPLETE'}</div></div>}
@@ -865,7 +997,10 @@
             }, [fundedAt]);
             if (!timeLeft || timeLeft === "Expired") return null;
             return (
-                <div className={`flex items-center gap-2 text-orange-400 ${isCompact ? '' : 'absolute top-4 left-4'}`}><i className="ph ph-timer animate-pulse"></i><span className="text-xs font-mono font-bold tracking-widest">{timeLeft}</span></div>
+                <div className={`flex items-center gap-2 text-orange-400 ${isCompact ? '' : 'absolute top-4 left-4'}`}>
+                    <i className="ph ph-timer animate-pulse"></i>
+                    <span className="text-xs font-mono font-bold tracking-widest">{timeLeft}</span>
+                </div>
             );
         };
 
@@ -878,6 +1013,7 @@
                 if (!firestore) return;
                 const unsubscribe = onSnapshot(collection(firestore, 'artifacts', appId, 'public', 'data', 'messages'), (snapshot) => {
                     const allMsgs = snapshot.docs.map(doc => doc.data());
+                    // Filter in memory as per constraints
                     const txMsgs = allMsgs.filter(m => m.transactionId === tx.id).sort((a, b) => a.timestamp - b.timestamp);
                     setMessages(txMsgs);
                     if(scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -893,42 +1029,84 @@
 
             return (
                 <div className="fixed bottom-20 right-6 w-80 md:w-96 h-[500px] glass-panel border border-[var(--panel-border)] rounded-xl flex flex-col shadow-2xl z-50 chat-window-enter font-sans">
+                    {/* Header with Live Timer */}
                     <div className="p-4 border-b border-[var(--panel-border)] bg-[var(--panel-bg)] flex justify-between items-center">
                         <div>
                             <div className="text-xs font-bold text-[var(--text-color)] uppercase">{tx.title}</div>
-                            {tx.status === 'funded' ? (<div className="text-[10px] mt-1 flex items-center gap-1"><span className="text-[var(--text-muted)]">Auto-Refund In:</span><TimerDisplay fundedAt={tx.fundedAt} isCompact={true} /></div>) : <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wide mt-1">{tx.status}</div>}
+                            {tx.status === 'funded' ? (
+                                <div className="text-[10px] mt-1 flex items-center gap-1">
+                                    <span className="text-[var(--text-muted)]">Auto-Refund In:</span>
+                                    <TimerDisplay fundedAt={tx.fundedAt} isCompact={true} />
+                                </div>
+                            ) : <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wide mt-1">{tx.status}</div>}
                         </div>
                         <button onClick={onClose} className="text-[var(--text-muted)] hover:text-white"><i className="ph ph-x text-lg"></i></button>
                     </div>
+
+                    {/* Messages Area */}
                     <div className="flex-1 overflow-y-auto p-4 space-y-3" ref={scrollRef}>
                         {messages.length === 0 && <div className="text-center text-[var(--text-muted)] text-xs italic mt-10">Secure channel established.<br/>Negotiate delivery details here.</div>}
                         {messages.map((m, i) => {
                             const isMe = m.sender === currentUser.uniqueHandle;
                             return (
                                 <div key={i} className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
-                                    <div className={`max-w-[85%] p-3 rounded-xl text-xs ${isMe ? 'bg-[var(--text-color)] text-[var(--bg-color)]' : 'bg-[var(--input-bg)] text-[var(--text-color)] border border-[var(--panel-border)]'}`}>{m.text}</div>
+                                    <div className={`max-w-[85%] p-3 rounded-xl text-xs ${isMe ? 'bg-[var(--text-color)] text-[var(--bg-color)]' : 'bg-[var(--input-bg)] text-[var(--text-color)] border border-[var(--panel-border)]'}`}>
+                                        {m.text}
+                                    </div>
                                     <div className="text-[9px] text-[var(--text-muted)] mt-1 opacity-50">{m.sender}</div>
                                 </div>
                             )
                         })}
                     </div>
+
+                    {/* Input Area */}
                     <div className="p-3 border-t border-[var(--panel-border)] bg-[var(--panel-bg)] flex gap-2">
-                        <input className="flex-1 bg-transparent text-xs text-[var(--text-color)] outline-none placeholder-[var(--text-muted)]" placeholder="Type a secure message..." value={input} onChange={e => setInput(e.target.value)} onKeyPress={e => e.key === 'Enter' && send()} />
+                        <input 
+                            className="flex-1 bg-transparent text-xs text-[var(--text-color)] outline-none placeholder-[var(--text-muted)]" 
+                            placeholder="Type a secure message..."
+                            value={input}
+                            onChange={e => setInput(e.target.value)}
+                            onKeyPress={e => e.key === 'Enter' && send()}
+                        />
                         <button onClick={send} className="text-[var(--text-color)] hover:text-emerald-400"><i className="ph-fill ph-paper-plane-right text-lg"></i></button>
                     </div>
                 </div>
             );
         };
 
+        // --- CORE MODALS ---
+
         const DepositModal = ({ tx, onClose, adminWallets, setProcessingAction, showNotification }) => {
             const walletAddress = adminWallets[tx.currency] || "Address Not Found";
             const handleCopy = () => {
+                // Fallback copy function defined inside to capture walletAddress
                 const fallbackCopy = () => {
                     try {
-                        const t = document.createElement("textarea"); t.value = walletAddress; t.style.position = "fixed"; t.style.left = "-9999px"; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); showNotification("Address Copied");
-                    } catch (e) { console.error("Copy failed", e); showNotification("Copy failed", "error"); }
+                        const t = document.createElement("textarea");
+                        t.value = walletAddress;
+                        t.style.position = "fixed";
+                        t.style.left = "-9999px";
+                        document.body.appendChild(t);
+                        t.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(t);
+                        showNotification("Address Copied");
+                    } catch (e) {
+                        console.error("Copy failed", e);
+                        showNotification("Copy failed", "error");
+                    }
                 };
-                if (navigator.clipboard) { navigator.clipboard.writeText(walletAddress).then(() => showNotification("Address Copied")).catch(err => { console.warn("Clipboard API failed, using fallback", err); fallbackCopy(); }); } else { fallbackCopy(); }
+
+                if (navigator.clipboard) { 
+                    navigator.clipboard.writeText(walletAddress)
+                        .then(() => showNotification("Address Copied"))
+                        .catch(err => {
+                            console.warn("Clipboard API failed, using fallback", err);
+                            fallbackCopy();
+                        });
+                } else { 
+                    fallbackCopy(); 
+                }
             };
             const handleConfirm = () => {
                 setProcessingAction({ type: 'deposit', text: 'Verifying Blockchain...', status: 'processing' });
@@ -971,7 +1149,6 @@
             );
         };
 
-        /* --- LANDING PAGE WITH TRUSTED BAR, FOOTER, & MOBILE FIXES --- */
         const LandingPage = ({ setView }) => {
             const steps = [
                 { t: "1. Agreement", i: "ph-handshake", c: "text-emerald-400", d: "Buyer and Seller agree on terms and initialize the smart contract." },
@@ -983,70 +1160,31 @@
             ];
 
             return (
-                <div className="min-h-screen flex flex-col relative overflow-x-hidden">
+                <div className="min-h-screen flex flex-col items-center relative overflow-hidden">
+                    {/* ADDED: Aurora Background for Landing Page */}
                     <AuroraBackground />
                     
-                    {/* Hero Section */}
-                    <div className="relative z-10 w-full flex flex-col items-center pt-32 pb-16 px-6 text-center">
-                        <div className="mb-8"><Logo size="lg" /></div>
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full premium-glass mb-8"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span><span className="text-[10px] font-bold uppercase tracking-widest">Live on Mainnet</span></div>
+                    <div className="relative z-10 w-full flex flex-col items-center pt-24 pb-12 px-6 text-center">
+                        <div className="mb-6"><Logo size="lg" /></div>
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full premium-glass mb-6"><span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span><span className="text-[10px] font-bold uppercase tracking-widest">Live on Mainnet</span></div>
                         <h1 className="text-5xl md:text-7xl font-serif mb-6">Trusted.<br/><span className="italic opacity-60">Private. Secure.</span></h1>
                         <p className="text-lg opacity-60 mb-12 max-w-xl mx-auto">Shieldscrow is the premier escrow service for high-value digital assets. Protecting over $50M in volume.</p>
                         <button onClick={() => setView('dashboard')} className="glow-button">Start Transaction</button>
-                    </div>
-
-                    {/* NEW: Trusted By Section */}
-                    <div className="w-full border-y border-[var(--panel-border)] bg-[var(--glass-bg)] backdrop-blur-sm py-8 mb-16">
-                        <div className="max-w-6xl mx-auto px-6 flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                            <div className="flex items-center gap-2"><i className="ph-fill ph-currency-eth text-2xl"></i><span className="font-bold text-sm">ETHEREUM</span></div>
-                            <div className="flex items-center gap-2"><i className="ph-fill ph-currency-btc text-2xl"></i><span className="font-bold text-sm">BITCOIN</span></div>
-                            <div className="flex items-center gap-2"><i className="ph-bold ph-shield-check text-2xl"></i><span className="font-bold text-sm">CHAINLINK</span></div>
-                            <div className="flex items-center gap-2"><i className="ph-bold ph-polygon text-2xl"></i><span className="font-bold text-sm">POLYGON</span></div>
-                        </div>
-                    </div>
-
-                    {/* How It Works - Mobile Swipe / Desktop Grid */}
-                    <div className="w-full max-w-7xl mx-auto px-6 pb-24">
-                        <h2 className="text-2xl font-serif mb-10 text-center">How Shieldscrow Works</h2>
                         
-                        {/* Mobile: Horizontal Scroll */}
-                        <div className="flex md:hidden overflow-x-auto snap-x-mandatory gap-4 pb-4 -mx-6 px-6">
-                            {steps.map((s, i) => (
-                                <div key={i} className="snap-center shrink-0 w-[280px] glass-panel p-6 rounded-xl text-center flex flex-col items-center">
-                                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-current/10 ${s.c}`}><i className={`ph ${s.i} text-2xl`}></i></div>
-                                    <h3 className="font-serif text-lg mb-2">{s.t}</h3>
-                                    <p className="text-xs opacity-60 leading-relaxed">{s.d}</p>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Desktop: Grid */}
-                        <div className="hidden md:grid grid-cols-3 gap-6">
-                            {steps.map((s, i) => (
-                                <div key={i} className="glass-panel p-8 rounded-xl hover:border-[var(--text-color)] transition duration-500 text-center group">
-                                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 mx-auto bg-current/10 ${s.c} group-hover:scale-110 transition-transform`}><i className={`ph ${s.i} text-2xl`}></i></div>
-                                    <h3 className="font-serif text-lg mb-2">{s.t}</h3>
-                                    <p className="text-xs opacity-60 leading-relaxed">{s.d}</p>
-                                </div>
-                            ))}
+                        {/* Original Grid Layout */}
+                        <div className="mt-24 w-full max-w-6xl px-6 pb-24">
+                            <h2 className="text-2xl font-serif mb-10 text-center">How Shieldscrow Works</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {steps.map((s, i) => (
+                                    <div key={i} className="glass-panel p-8 rounded-xl hover:border-[var(--text-color)] transition duration-500 text-center group">
+                                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 mx-auto bg-current/10 ${s.c} group-hover:scale-110 transition-transform`}><i className={`ph ${s.i} text-2xl`}></i></div>
+                                        <h3 className="font-serif text-lg mb-2">{s.t}</h3>
+                                        <p className="text-xs opacity-60 leading-relaxed">{s.d}</p>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
-
-                    {/* NEW: Footer */}
-                    <footer className="border-t border-[var(--panel-border)] bg-[var(--panel-bg)] py-12 mt-auto">
-                        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-                            <div className="flex items-center gap-2 opacity-50">
-                                <div className="w-6 h-6 bg-[var(--text-color)] rounded flex items-center justify-center text-[var(--bg-color)]"><i className="ph-bold ph-shield-check text-xs"></i></div>
-                                <span className="text-sm font-serif">Shieldscrow &copy; 2024</span>
-                            </div>
-                            <div className="flex gap-8">
-                                <a href="#" className="footer-link">Terms</a>
-                                <a href="#" className="footer-link">Privacy</a>
-                                <a href="#" className="footer-link">Smart Contract</a>
-                                <a href="#" className="footer-link">Support</a>
-                            </div>
-                        </div>
-                    </footer>
                 </div>
             );
         };
@@ -1060,20 +1198,33 @@
             const handleAuth = async () => {
                 setError('');
                 setIsLoading(true);
+                
+                // FIX: Trim inputs to avoid space errors
                 const trimmedName = formData.name.trim().toLowerCase();
                 const trimmedPassword = formData.password.trim();
 
+                // SECRET ADMIN LOGIN CHECK (Hardcoded for simplicity in this version)
                 if (trimmedName === 'admin' && trimmedPassword === 'admin123') {
-                    setTimeout(() => { onAuthSuccess({ name: 'Administrator', role: 'admin', uniqueHandle: '@admin_key', region: 'Global' }); }, 1000);
+                    setTimeout(() => {
+                        onAuthSuccess({ name: 'Administrator', role: 'admin', uniqueHandle: '@admin_key', region: 'Global' });
+                    }, 1000);
                     return;
                 }
 
                 if (mode === 'signup') {
                     if(!formData.name || !formData.password) { setIsLoading(false); return setError("Fields required."); }
-                    const success = await dbHelper.registerUser(formData);
-                    if (success) onAuthSuccess(success); else setError("Signup failed. Try again.");
+                    // Pass CLEAN data to dbHelper
+                    const cleanData = { ...formData, name: trimmedName, password: trimmedPassword };
+                    const success = await dbHelper.registerUser(cleanData);
+                    if (success) {
+                        // AUTO-LOGIN AFTER SIGNUP
+                        onAuthSuccess(success); 
+                    } else {
+                        setError("Signup failed. Try again.");
+                    }
                 } else {
-                    const userMatch = await dbHelper.authenticateUser(formData.name, formData.password);
+                    // Pass CLEAN data to dbHelper
+                    const userMatch = await dbHelper.authenticateUser(trimmedName, trimmedPassword);
                     if (userMatch) onAuthSuccess(userMatch); else setError("Invalid credentials.");
                 }
                 setIsLoading(false);
@@ -1081,10 +1232,15 @@
             
             return (
                 <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+                    {/* Light Data Stream Background for Auth */}
                     <CryptoDataBackground />
+                    
+                    {/* PREIUM GLASS Panel for Login Box */}
                     <div className="premium-glass w-full max-w-md p-8 rounded-3xl relative z-10 shadow-2xl">
                         <div className="text-center mb-8">
-                            <div className="mb-4 flex justify-center"><Logo /></div>
+                            <div className="mb-4 flex justify-center">
+                                <Logo />
+                            </div>
                             <h1 className="text-3xl font-serif mt-2 tracking-wide text-[var(--auth-text)]">Shieldscrow</h1>
                             <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--auth-muted)] mt-2">The Standard in Digital Trust</p>
                         </div>
@@ -1106,19 +1262,30 @@
 
         const Dashboard = ({ transactions, setView, handleAction, handleChat, currentUser }) => (
             <div className="max-w-6xl mx-auto px-6 mt-12 mb-24 slide-up-enter">
+                
+                {/* NEW: LIVE ACTIVITY TICKER INSERTED HERE */}
                 <LiveActivityTicker />
+
                 <div className="flex justify-between items-end mb-8">
                     <h2 className="text-3xl font-serif">My Contracts</h2>
                     <button onClick={() => setView('create')} className="px-6 py-3 bg-[var(--btn-bg)] text-[var(--btn-text)] rounded-lg text-xs font-bold uppercase hover:opacity-90">+ New</button>
                 </div>
                 <div className="grid gap-4">
-                    {transactions.filter(tx => tx.creatorHandle === currentUser.uniqueHandle || tx.counterpartyHandle === currentUser.uniqueHandle).map(tx => (
+                    {/* FILTER: Only show transactions where current user is CREATOR or COUNTERPARTY */}
+                    {transactions.filter(tx => tx.creatorHandle === currentUser.uniqueHandle || tx.counterpartyHandle === currentUser.uniqueHandle).map(tx => {
+                        const isBuyer = currentUser.uniqueHandle === tx.buyerHandle;
+                        const isSeller = currentUser.uniqueHandle === tx.sellerHandle;
+                        
+                        return (
                         <div key={tx.id} className="glass-panel p-6 rounded-xl flex flex-col md:flex-row justify-between items-center gap-6 relative group border border-[var(--panel-border)] hover:border-[var(--text-color)] transition-all duration-300">
                             {tx.status === 'funded' && <TimerDisplay fundedAt={tx.fundedAt} />}
                             <div className="mt-6 md:mt-0">
                                 <h3 className="text-xl font-serif mb-1">{tx.title}</h3>
                                 <div className="text-xs uppercase tracking-widest text-[var(--text-muted)]">
                                     {tx.amount} {tx.currency} • <span className={tx.status === 'funded' ? 'text-orange-400 font-bold ml-1' : (tx.status === 'refunded' ? 'text-red-400 ml-1' : 'ml-1')}>{tx.status}</span>
+                                </div>
+                                <div className="text-[10px] text-[var(--text-muted)] mt-1 font-bold">
+                                    {isBuyer ? <span className="text-emerald-400">YOU ARE BUYER</span> : <span className="text-blue-400">YOU ARE SELLER</span>}
                                 </div>
                                 <div className="text-[10px] text-[var(--text-muted)] mt-1">
                                     With: {tx.creatorHandle === currentUser.uniqueHandle ? tx.counterpartyHandle : tx.creatorHandle}
@@ -1128,39 +1295,69 @@
                                 <button onClick={() => handleChat(tx)} className="px-4 py-2 border border-[var(--panel-border)] bg-[var(--input-bg)] hover:bg-[var(--panel-border)] rounded text-[10px] uppercase font-bold flex items-center gap-2">
                                     <i className="ph-fill ph-chat-text"></i> Secure Comms
                                 </button>
-                                {tx.status === 'created' && <button onClick={() => handleAction(tx, 'deposit')} className="px-5 py-2 bg-[var(--btn-bg)] text-[var(--btn-text)] rounded text-xs font-bold uppercase">Deposit</button>}
-                                {tx.status === 'funded' && <button onClick={() => handleAction(tx, 'deliver')} className="px-5 py-2 bg-[var(--btn-bg)] text-[var(--btn-text)] rounded text-xs font-bold uppercase">Deliver</button>}
-                                {tx.status === 'delivered' && <button onClick={() => handleAction(tx, 'verify_good')} className="px-5 py-2 border border-[var(--panel-border)] text-[var(--text-color)] text-xs font-bold uppercase rounded">Approve</button>}
+                                
+                                {/* SMART BUTTON LOGIC */}
+                                {tx.status === 'created' && isBuyer && <button onClick={() => handleAction(tx, 'deposit')} className="px-5 py-2 bg-[var(--btn-bg)] text-[var(--btn-text)] rounded text-xs font-bold uppercase">Deposit</button>}
+                                {tx.status === 'created' && !isBuyer && <div className="px-4 py-2 border border-dashed border-gray-500 rounded text-[10px] uppercase text-gray-400">Waiting for Deposit</div>}
+
+                                {tx.status === 'funded' && isSeller && <button onClick={() => handleAction(tx, 'deliver')} className="px-5 py-2 bg-[var(--btn-bg)] text-[var(--btn-text)] rounded text-xs font-bold uppercase">Deliver</button>}
+                                {tx.status === 'funded' && !isSeller && <div className="px-4 py-2 border border-dashed border-gray-500 rounded text-[10px] uppercase text-gray-400">Waiting for Delivery</div>}
+
+                                {tx.status === 'delivered' && isBuyer && <button onClick={() => handleAction(tx, 'verify_good')} className="px-5 py-2 border border-[var(--panel-border)] text-[var(--text-color)] text-xs font-bold uppercase rounded">Approve & Release</button>}
+                                {tx.status === 'delivered' && !isBuyer && <div className="px-4 py-2 border border-dashed border-gray-500 rounded text-[10px] uppercase text-gray-400">Pending Approval</div>}
+
+                                {tx.status === 'released' && <div className="text-xs text-emerald-400 uppercase border border-emerald-900 px-3 py-1 rounded bg-emerald-900/20">Completed</div>}
                                 {tx.status === 'refunded' && <div className="text-xs text-red-400 uppercase border border-red-900 px-3 py-1 rounded">Funds Returned</div>}
                             </div>
                         </div>
-                    ))}
+                    )})}
                     {transactions.filter(tx => tx.creatorHandle === currentUser.uniqueHandle || tx.counterpartyHandle === currentUser.uniqueHandle).length === 0 && <div className="text-center py-12 text-[var(--text-muted)] glass-panel rounded-xl border border-dashed border-[var(--panel-border)]">No active contracts found. Start a new transaction to begin.</div>}
                 </div>
             </div>
         );
 
+        /* --- NEW WIZARD COMPONENT REPLACING THE OLD CREATE TRANSACTION --- */
         const CreateTransaction = ({ setView, adminWallets, currentUser, showNotification }) => {
             const [step, setStep] = useState(1);
-            const [form, setForm] = useState({ title: '', amount: '', role: 'buyer', currency: 'Ethereum (ETH)', counterpartyHandle: '', terms: '' });
-            
+            const [form, setForm] = useState({ 
+                title: '', amount: '', role: '', currency: 'Ethereum (ETH)', 
+                counterpartyHandle: '', terms: '' 
+            });
+
+            // Helper to track mouse for Spotlight Effect
             const handleMouseMove = (e) => {
                 const rect = e.currentTarget.getBoundingClientRect();
-                e.currentTarget.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-                e.currentTarget.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
+                e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
             };
 
             const handleSubmit = async () => {
                 if (!form.title || !form.amount || !form.counterpartyHandle) return showNotification("Please fill all fields", "error");
                 
+                // VERIFY COUNTERPARTY EXISTS
+                const exists = await dbHelper.checkHandleExists(form.counterpartyHandle);
+                if (!exists) {
+                    return showNotification(`User ${form.counterpartyHandle} not found! Ask them to sign up first.`, "error");
+                }
+
                 const myHandle = currentUser.uniqueHandle || ("@" + currentUser.name.toLowerCase().replace(/\s/g, '') + "0000");
 
                 const newTx = { 
-                    title: form.title, amount: form.amount, role: form.role, currency: form.currency, status: 'created', 
-                    buyerVerification: 'pending', buyerHandle: form.role === 'buyer' ? myHandle : form.counterpartyHandle,
-                    sellerHandle: form.role === 'seller' ? myHandle : form.counterpartyHandle, creatorHandle: myHandle,
-                    counterpartyHandle: form.counterpartyHandle, buyerName: form.role === 'buyer' ? currentUser.name : "Counterparty", 
-                    sellerName: form.role === 'seller' ? currentUser.name : "Counterparty", terms: form.terms || "",
+                    title: form.title, 
+                    amount: form.amount, 
+                    role: form.role, 
+                    currency: form.currency, 
+                    status: 'created', 
+                    buyerVerification: 'pending', 
+                    buyerHandle: form.role === 'buyer' ? myHandle : form.counterpartyHandle,
+                    sellerHandle: form.role === 'seller' ? myHandle : form.counterpartyHandle,
+                    creatorHandle: myHandle,
+                    counterpartyHandle: form.counterpartyHandle,
+                    buyerName: form.role === 'buyer' ? currentUser.name : "Counterparty", 
+                    sellerName: form.role === 'seller' ? currentUser.name : "Counterparty", 
+                    terms: form.terms || "",
                     history: [{ step: 'Created', time: new Date().toLocaleTimeString() }] 
                 };
                 await dbHelper.createTransaction(newTx);
@@ -1175,58 +1372,156 @@
             };
 
             const renderProgressBar = () => (
-                <div className="w-full h-1 bg-[var(--input-bg)] rounded-full mb-8 overflow-hidden flex"><div className={`h-full transition-all duration-500 ease-out progress-glow ${step >= 1 ? 'bg-emerald-400 w-1/3' : 'w-0'}`}></div><div className={`h-full transition-all duration-500 ease-out progress-glow ${step >= 2 ? 'bg-emerald-400 w-1/3' : 'w-0'}`}></div><div className={`h-full transition-all duration-500 ease-out progress-glow ${step >= 3 ? 'bg-emerald-400 w-1/3' : 'w-0'}`}></div></div>
+                <div className="w-full h-1 bg-[var(--input-bg)] rounded-full mb-8 overflow-hidden flex">
+                    <div className={`h-full transition-all duration-500 ease-out progress-glow ${step >= 1 ? 'bg-emerald-400 w-1/3' : 'w-0'}`}></div>
+                    <div className={`h-full transition-all duration-500 ease-out progress-glow ${step >= 2 ? 'bg-emerald-400 w-1/3' : 'w-0'}`}></div>
+                    <div className={`h-full transition-all duration-500 ease-out progress-glow ${step >= 3 ? 'bg-emerald-400 w-1/3' : 'w-0'}`}></div>
+                </div>
             );
 
             return (
                 <>
                     <CryptoBackground />
                     <div className="max-w-2xl mx-auto mt-12 px-6 fade-in mb-24 relative z-10">
-                        <div className="flex justify-between items-center mb-8">
+                        <div className="flex justify-between items-end mb-8">
                             <h2 className="text-2xl font-serif">New Transaction</h2>
-                            <button onClick={() => setView('dashboard')} className="text-xs font-bold uppercase flex items-center gap-2 text-[var(--text-muted)] hover:text-[var(--text-color)] transition-colors">Cancel <i className="ph ph-x"></i></button>
+                            <button onClick={() => setView('dashboard')} className="text-xs font-bold uppercase flex items-center gap-2 text-[var(--text-muted)] hover:text-[var(--text-color)] transition-colors">
+                                Cancel <i className="ph-bold ph-x"></i>
+                            </button>
                         </div>
                         
-                        <div className="glass-panel p-8 md:p-12 rounded-2xl border border-[var(--panel-border)] spotlight-card shadow-2xl" onMouseMove={handleMouseMove}>
+                        {/* THE SPOTLIGHT WIZARD CARD */}
+                        <div 
+                            className="glass-panel p-8 md:p-12 rounded-2xl border border-[var(--panel-border)] spotlight-card shadow-2xl"
+                            onMouseMove={handleMouseMove}
+                        >
                             {renderProgressBar()}
 
                             <div className="min-h-[300px]">
+                                {/* STEP 1: ROLE SELECTION */}
                                 {step === 1 && (
                                     <div className="step-slide-enter">
                                         <h2 className="text-3xl font-serif mb-2">What is your role?</h2>
                                         <p className="text-[var(--text-muted)] text-sm mb-8">Choose how you will participate in this transaction.</p>
+                                        
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <div onClick={() => setForm({...form, role: 'buyer'})} className={`cursor-pointer p-6 rounded-xl border-2 transition-all duration-300 hover:scale-[1.02] flex flex-col items-center text-center gap-4 ${form.role === 'buyer' ? 'border-emerald-400 bg-emerald-400/10' : 'border-[var(--input-border)] hover:border-[var(--text-muted)] bg-[var(--input-bg)]'}`}><div className="w-16 h-16 rounded-full bg-[var(--bg-color)] flex items-center justify-center text-3xl shadow-lg"><i className="ph-fill ph-shopping-bag-open text-emerald-400"></i></div><div><h3 className="font-bold text-lg">I am Buying</h3><p className="text-xs text-[var(--text-muted)] mt-1">I will deposit funds into the vault.</p></div></div>
-                                            <div onClick={() => setForm({...form, role: 'seller'})} className={`cursor-pointer p-6 rounded-xl border-2 transition-all duration-300 hover:scale-[1.02] flex flex-col items-center text-center gap-4 ${form.role === 'seller' ? 'border-blue-400 bg-blue-400/10' : 'border-[var(--input-border)] hover:border-[var(--text-muted)] bg-[var(--input-bg)]'}`}><div className="w-16 h-16 rounded-full bg-[var(--bg-color)] flex items-center justify-center text-3xl shadow-lg"><i className="ph-fill ph-package text-blue-400"></i></div><div><h3 className="font-bold text-lg">I am Selling</h3><p className="text-xs text-[var(--text-muted)] mt-1">I will deliver assets/services.</p></div></div>
+                                            <div 
+                                                onClick={() => setForm({...form, role: 'buyer'})}
+                                                className={`cursor-pointer p-6 rounded-xl border-2 transition-all duration-300 hover:scale-[1.02] flex flex-col items-center text-center gap-4 ${form.role === 'buyer' ? 'border-emerald-400 bg-emerald-400/10' : 'border-[var(--input-border)] hover:border-[var(--text-muted)] bg-[var(--input-bg)]'}`}
+                                            >
+                                                <div className="w-16 h-16 rounded-full bg-[var(--bg-color)] flex items-center justify-center text-3xl shadow-lg">
+                                                    <i className="ph-fill ph-shopping-bag-open text-emerald-400"></i>
+                                                </div>
+                                                <div>
+                                                    <h3 className="font-bold text-lg">I am Buying</h3>
+                                                    <p className="text-xs text-[var(--text-muted)] mt-1">I will deposit funds into the vault.</p>
+                                                </div>
+                                            </div>
+
+                                            <div 
+                                                onClick={() => setForm({...form, role: 'seller'})}
+                                                className={`cursor-pointer p-6 rounded-xl border-2 transition-all duration-300 hover:scale-[1.02] flex flex-col items-center text-center gap-4 ${form.role === 'seller' ? 'border-blue-400 bg-blue-400/10' : 'border-[var(--input-border)] hover:border-[var(--text-muted)] bg-[var(--input-bg)]'}`}
+                                            >
+                                                <div className="w-16 h-16 rounded-full bg-[var(--bg-color)] flex items-center justify-center text-3xl shadow-lg">
+                                                    <i className="ph-fill ph-package text-blue-400"></i>
+                                                </div>
+                                                <div>
+                                                    <h3 className="font-bold text-lg">I am Selling</h3>
+                                                    <p className="text-xs text-[var(--text-muted)] mt-1">I will deliver assets/services.</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 )}
+
+                                {/* STEP 2: COUNTERPARTY & ASSET */}
                                 {step === 2 && (
                                     <div className="step-slide-enter">
                                         <h2 className="text-3xl font-serif mb-2">Who is the partner?</h2>
                                         <p className="text-[var(--text-muted)] text-sm mb-8">Identify who you are doing business with.</p>
+                                        
                                         <div className="space-y-6">
-                                            <div><label className="text-[10px] uppercase font-bold text-[var(--text-muted)] mb-2 block">Counterparty Handle</label><div className="relative group"><i className="ph ph-at absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)] group-focus-within:text-emerald-400 transition-colors"></i><input type="text" autoFocus value={form.counterpartyHandle} placeholder="username123" className="w-full tech-input p-4 rounded-xl pl-10 text-lg font-mono" onChange={e => setForm({...form, counterpartyHandle: e.target.value})} /></div></div>
-                                            <div><label className="text-[10px] uppercase font-bold text-[var(--text-muted)] mb-2 block">Asset / Project Name</label><input type="text" value={form.title} placeholder="e.g. Domain Name, 3D Model, Consultancy" className="w-full tech-input p-4 rounded-xl text-lg" onChange={e => setForm({...form, title: e.target.value})} /></div>
+                                            <div>
+                                                <label className="text-[10px] uppercase font-bold text-[var(--text-muted)] mb-2 block">Counterparty Handle</label>
+                                                <div className="relative group">
+                                                    <i className="ph ph-at absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)] group-focus-within:text-emerald-400 transition-colors"></i>
+                                                    <input 
+                                                        type="text" 
+                                                        autoFocus
+                                                        value={form.counterpartyHandle}
+                                                        placeholder="username123" 
+                                                        className="w-full tech-input p-4 rounded-xl pl-10 text-lg font-mono" 
+                                                        onChange={e => setForm({...form, counterpartyHandle: e.target.value})} 
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label className="text-[10px] uppercase font-bold text-[var(--text-muted)] mb-2 block">Asset / Project Name</label>
+                                                <input 
+                                                    type="text" 
+                                                    value={form.title}
+                                                    placeholder="e.g. Domain Name, 3D Model, Consultancy" 
+                                                    className="w-full tech-input p-4 rounded-xl text-lg" 
+                                                    onChange={e => setForm({...form, title: e.target.value})} 
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 )}
+
+                                {/* STEP 3: FINANCIALS & TERMS */}
                                 {step === 3 && (
                                     <div className="step-slide-enter">
                                         <h2 className="text-3xl font-serif mb-2">Contract Value</h2>
                                         <p className="text-[var(--text-muted)] text-sm mb-8">Set the terms and amount to be secured.</p>
+                                        
                                         <div className="grid grid-cols-5 gap-4 mb-6">
-                                            <div className="col-span-2"><CustomSelect label="Currency" options={Object.keys(adminWallets)} value={form.currency} onChange={v => setForm({...form, currency: v})} /></div>
-                                            <div className="col-span-3"><label className="block text-xs font-bold uppercase text-[var(--text-muted)] mb-3">Amount</label><div className="relative"><input type="number" value={form.amount} className="w-full tech-input rounded p-4 font-mono text-xl pr-12" placeholder="0.00" onChange={e => setForm({...form, amount: e.target.value})} /></div></div>
+                                            <div className="col-span-2">
+                                                 <CustomSelect label="Currency" options={Object.keys(adminWallets)} value={form.currency} onChange={v => setForm({...form, currency: v})} />
+                                            </div>
+                                            <div className="col-span-3">
+                                                <label className="block text-xs font-bold uppercase text-[var(--text-muted)] mb-3">Amount</label>
+                                                <div className="relative">
+                                                    <input 
+                                                        type="number" 
+                                                        value={form.amount}
+                                                        className="w-full tech-input rounded p-4 font-mono text-xl pr-12" 
+                                                        placeholder="0.00"
+                                                        onChange={e => setForm({...form, amount: e.target.value})} 
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div><label className="text-[10px] uppercase font-bold text-[var(--text-muted)] mb-2 block">Terms of Agreement (Optional)</label><textarea className="w-full tech-input p-4 rounded-xl h-24 font-mono text-xs leading-relaxed resize-none" placeholder="Describe the delivery conditions..." value={form.terms} onChange={e => setForm({...form, terms: e.target.value})}></textarea></div>
+
+                                        <div>
+                                            <label className="text-[10px] uppercase font-bold text-[var(--text-muted)] mb-2 block">Terms of Agreement (Optional)</label>
+                                            <textarea 
+                                                className="w-full tech-input p-4 rounded-xl h-24 font-mono text-xs leading-relaxed resize-none" 
+                                                placeholder="Describe the delivery conditions..."
+                                                value={form.terms}
+                                                onChange={e => setForm({...form, terms: e.target.value})}
+                                            ></textarea>
+                                        </div>
                                     </div>
                                 )}
                             </div>
 
+                            {/* NAVIGATION BUTTONS */}
                             <div className="flex justify-between items-center mt-8 pt-6 border-t border-[var(--panel-border)]">
-                                {step > 1 ? (<button onClick={() => setStep(step - 1)} className="text-xs font-bold uppercase text-[var(--text-muted)] hover:text-[var(--text-color)] px-4 py-2">Back</button>) : <div></div>}
-                                {step < 3 ? (<button onClick={nextStep} className="glow-button flex items-center gap-2">Next Step <i className="ph-bold ph-arrow-right"></i></button>) : (<button onClick={handleSubmit} className="glow-button bg-emerald-500 border-emerald-500 text-white shadow-[0_0_20px_rgba(16,185,129,0.3)]">Create Contract</button>)}
+                                {step > 1 ? (
+                                    <button onClick={() => setStep(step - 1)} className="text-xs font-bold uppercase text-[var(--text-muted)] hover:text-[var(--text-color)] px-4 py-2">Back</button>
+                                ) : <div></div>}
+                                
+                                {step < 3 ? (
+                                    <button onClick={nextStep} className="glow-button flex items-center gap-2">
+                                        Next Step <i className="ph-bold ph-arrow-right"></i>
+                                    </button>
+                                ) : (
+                                    <button onClick={handleSubmit} className="glow-button bg-emerald-500 border-emerald-500 text-white shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                                        Create Contract
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -1235,10 +1530,11 @@
         };
 
         const AdminPanel = ({ walletsInput, setWalletsInput, transactions, handleAdminAction }) => {
-             /* Admin Panel Code (Same as before) */
-             /* ... Truncated for brevity since it wasn't changed ... */
             const [users, setUsers] = useState([]);
-            useEffect(() => { const loadUsers = async () => { const data = await dbHelper.getAllUsers(); setUsers(data); }; loadUsers(); }, []);
+            useEffect(() => {
+                const loadUsers = async () => { const data = await dbHelper.getAllUsers(); setUsers(data); };
+                loadUsers();
+            }, []);
             return (
                 <div className="max-w-7xl mx-auto px-6 mt-16 mb-24">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
@@ -1256,14 +1552,28 @@
                     <div className="glass-panel p-8 rounded-lg border border-[var(--panel-border)] overflow-hidden">
                         <h2 className="text-2xl font-serif mb-6">Global Transaction Monitor</h2>
                         <div className="overflow-x-auto">
-                            <table className="w-full text-left text-xs"><thead><tr className="text-[var(--text-muted)] border-b border-[var(--panel-border)]"><th className="pb-3 uppercase">Date</th><th className="pb-3 uppercase">Asset</th><th className="pb-3 uppercase">Handles (B / S)</th><th className="pb-3 uppercase">Amount</th><th className="pb-3 uppercase">Status</th><th className="pb-3 uppercase text-right">Arbitration</th></tr></thead><tbody className="font-mono">{transactions.map(tx => (<tr key={tx.id} className="border-b border-[var(--panel-border)] hover:bg-[var(--input-bg)] transition-colors"><td className="py-3 text-[var(--text-muted)]">{new Date(tx.dateMs).toLocaleDateString()}</td><td className="py-3 font-bold text-[var(--text-color)]">{tx.title}</td><td className="py-3"><div className="flex flex-col gap-1"><div className="text-emerald-400 text-[10px]">{tx.buyerHandle || 'N/A'}</div><div className="text-blue-400 text-[10px]">{tx.sellerHandle || 'N/A'}</div></div></td><td className="py-3 text-[var(--text-color)] font-bold">{tx.amount} <span className="text-[10px] text-[var(--text-muted)] font-normal">{tx.currency.split(' ')[0]}</span></td><td className="py-3"><span className={`uppercase text-[10px] px-2 py-1 rounded border tracking-wider ${tx.status === 'funded' ? 'border-orange-500/50 text-orange-400 bg-orange-900/20' : tx.status === 'delivered' ? 'border-blue-500/50 text-blue-400 bg-blue-900/20' : tx.status === 'released' ? 'border-emerald-500/50 text-emerald-400 bg-emerald-900/20' : tx.status === 'refunded' ? 'border-red-500/50 text-red-400 bg-red-900/20' : 'border-gray-500/50 text-gray-400'}`}>{tx.status}</span></td><td className="py-3 text-right"><div className="flex gap-2 justify-end"><button onClick={() => handleAdminAction(tx.id, 'release')} className="text-emerald-400 hover:bg-emerald-900/30 px-3 py-1 rounded border border-emerald-500/30 hover:border-emerald-400 transition" title="Release Funds to Seller">Release</button><button onClick={() => handleAdminAction(tx.id, 'refund')} className="text-red-400 hover:bg-red-900/30 px-3 py-1 rounded border border-red-500/30 hover:border-red-400 transition" title="Refund Buyer">Refund</button></div></td></tr>))}{transactions.length === 0 && <tr><td colSpan="6" className="py-12 text-center text-[var(--text-muted)] uppercase tracking-widest text-xs">No active transactions found in ledger</td></tr>}</tbody></table>
+                            <table className="w-full text-left text-xs">
+                                <thead><tr className="text-[var(--text-muted)] border-b border-[var(--panel-border)]"><th className="pb-3 uppercase">Date</th><th className="pb-3 uppercase">Asset</th><th className="pb-3 uppercase">Handles (B / S)</th><th className="pb-3 uppercase">Amount</th><th className="pb-3 uppercase">Status</th><th className="pb-3 uppercase text-right">Arbitration</th></tr></thead>
+                                <tbody className="font-mono">
+                                    {transactions.map(tx => (
+                                        <tr key={tx.id} className="border-b border-[var(--panel-border)] hover:bg-[var(--input-bg)] transition-colors">
+                                            <td className="py-3 text-[var(--text-muted)]">{new Date(tx.dateMs).toLocaleDateString()}</td>
+                                            <td className="py-3 font-bold text-[var(--text-color)]">{tx.title}</td>
+                                            <td className="py-3"><div className="flex flex-col gap-1"><div className="text-emerald-400 text-[10px]">{tx.buyerHandle || 'N/A'}</div><div className="text-blue-400 text-[10px]">{tx.sellerHandle || 'N/A'}</div></div></td>
+                                            <td className="py-3 text-[var(--text-color)] font-bold">{tx.amount} <span className="text-[10px] text-[var(--text-muted)] font-normal">{tx.currency.split(' ')[0]}</span></td>
+                                            <td className="py-3"><span className={`uppercase text-[10px] px-2 py-1 rounded border tracking-wider ${tx.status === 'funded' ? 'border-orange-500/50 text-orange-400 bg-orange-900/20' : tx.status === 'delivered' ? 'border-blue-500/50 text-blue-400 bg-blue-900/20' : tx.status === 'released' ? 'border-emerald-500/50 text-emerald-400 bg-emerald-900/20' : tx.status === 'refunded' ? 'border-red-500/50 text-red-400 bg-red-900/20' : 'border-gray-500/50 text-gray-400'}`}>{tx.status}</span></td>
+                                            <td className="py-3 text-right"><div className="flex gap-2 justify-end"><button onClick={() => handleAdminAction(tx.id, 'release')} className="text-emerald-400 hover:bg-emerald-900/30 px-3 py-1 rounded border border-emerald-500/30 hover:border-emerald-400 transition" title="Release Funds to Seller">Release</button><button onClick={() => handleAdminAction(tx.id, 'refund')} className="text-red-400 hover:bg-red-900/30 px-3 py-1 rounded border border-red-500/30 hover:border-red-400 transition" title="Refund Buyer">Refund</button></div></td>
+                                        </tr>
+                                    ))}
+                                    {transactions.length === 0 && <tr><td colSpan="6" className="py-12 text-center text-[var(--text-muted)] uppercase tracking-widest text-xs">No active transactions found in ledger</td></tr>}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             );
         };
 
-        /* Navbar, AnimationDebugBox, and App components remain the same as previously corrected */
         const Navbar = ({ setView, currentUser, onLogout }) => {
             const [showCopyTooltip, setShowCopyTooltip] = useState(false);
             const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -1322,7 +1632,7 @@
                         <span className="text-2xl font-serif font-medium tracking-wide text-[var(--text-color)] hidden md:block">Shieldscrow</span>
                         <div className="flex items-center gap-2 ml-4 px-3 py-1 rounded-full glass-panel border border-[var(--panel-border)] hidden sm:flex">
                             <div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></div>
-                            <span className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">{isOnline ? 'Mainnet' : 'Offline'}</span>
+                            <span className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">{isOnline ? 'Home' : 'Offline'}</span>
                         </div>
                     </div>
                     
@@ -1436,7 +1746,7 @@
                     {toast && <div className="fixed top-4 left-1/2 -translate-x-1/2 bg-[var(--btn-bg)] text-[var(--btn-text)] px-6 py-2 rounded-full z-50 font-bold border border-[var(--panel-border)]">{toast.msg}</div>}
                     <Navbar setView={setView} currentUser={user} onLogout={handleLogout} />
                     
-                    <AnimationDebugBox setProcessingAction={setProcessingAction} />
+                    {/* AnimationDebugBox removed */}
                     
                     {view === 'landing' && <LandingPage setView={setView} />}
                     {view === 'dashboard' && <Dashboard transactions={transactions} setView={setView} handleAction={(tx, type) => type === 'deposit' ? setShowDepositModal(tx) : setShowDeliverModal(tx)} handleChat={setActiveChatTx} handleAI={handleAI} currentUser={user} />}
