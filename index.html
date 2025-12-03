@@ -62,8 +62,9 @@
             --aurora-3: #e8dff5;
             
             /* Light Mode Card Accent */
-            --card-accent: rgba(99, 102, 241, 0.8);
-            --dashboard-grid-color: rgba(0, 0, 0, 0.05);
+            --card-accent: #6366f1; /* Indigo */
+            --card-bg-solid: #ffffff;
+            --grid-color: rgba(99, 102, 241, 0.15); /* Stronger Grid */
 
             --auth-text: #0f172a;
             --auth-muted: #64748b;
@@ -108,8 +109,9 @@
             --aurora-3: #172554;
             
             /* Dark Mode Card Accent */
-            --card-accent: #6366f1;
-            --dashboard-grid-color: rgba(255, 255, 255, 0.05);
+            --card-accent: #818cf8; /* Lighter Indigo */
+            --card-bg-solid: #0f172a;
+            --grid-color: rgba(99, 102, 241, 0.2);
             
             --auth-text: #f5f5f5;
             --auth-muted: #a3a3a3;
@@ -118,7 +120,7 @@
         }
 
         /* GLOBAL TRANSITIONS */
-        body, .glass-panel, .luxury-input, button, input, select, .premium-glass, .hologram-ticker, .tech-input, .cyber-card {
+        body, .glass-panel, .luxury-input, button, input, select, .premium-glass, .hologram-ticker, .tech-input, .cyber-card-v4 {
             transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
                         color 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
                         border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
@@ -133,56 +135,26 @@
         ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
         ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); }
 
-        /* --- DASHBOARD SPECIFIC STYLES --- */
-        
-        /* 1. The Background Grid for Dashboard */
-        .dashboard-bg {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: -1;
-            background-image: 
-                linear-gradient(var(--dashboard-grid-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--dashboard-grid-color) 1px, transparent 1px);
-            background-size: 40px 40px;
-            opacity: 0.5;
-            mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
-        }
-        
-        /* 2. Futuristic Cards */
-        .cyber-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-left: 4px solid var(--card-accent);
+        /* --- V4 ULTIMATE CYBER CARDS (Aggressive Style) --- */
+        .cyber-card-v4 {
+            background: var(--card-bg-solid);
+            border: 2px solid var(--card-accent); /* Visible full border */
+            border-left: 8px solid var(--card-accent); /* Thick left accent */
             position: relative;
             overflow: hidden;
-            border-radius: 12px;
+            border-radius: 8px; /* Sharper corners for tech feel */
             transition: all 0.3s ease;
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.15);
+            z-index: 10; 
         }
         
-        .cyber-card:hover {
-            transform: translateY(-4px) scale(1.01);
-            box-shadow: 0 20px 50px -12px rgba(99, 102, 241, 0.25); /* Stronger glow on hover */
+        .cyber-card-v4:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.4);
+            border-color: #a855f7; /* Changes color on hover */
         }
         
-        /* Scan Line Animation inside Card */
-        .cyber-card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
-            transform: skewX(-20deg);
-            transition: 0.5s;
-            pointer-events: none;
-        }
-        
-        .cyber-card:hover::after {
-            left: 100%;
-            transition: 0.7s ease-in-out;
-        }
-        
-        /* Tech Badge (Angled Cut) */
+        /* Tech Badge */
         .tech-badge {
             clip-path: polygon(10% 0, 100% 0, 100% 80%, 90% 100%, 0 100%, 0 20%);
             padding: 4px 12px;
@@ -192,28 +164,31 @@
             font-size: 10px;
             display: inline-block;
             background: rgba(99, 102, 241, 0.1);
-            color: #6366f1;
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            color: var(--card-accent);
+            border: 1px solid var(--card-accent);
         }
 
-        /* STANDARD CLASSES */
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
+        /* --- NEW FIXED BACKGROUND FOR DASHBOARD --- */
+        .dashboard-bg-layer {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0; /* Sit on top of body background */
+            pointer-events: none;
+            
+            /* Aggressive Grid */
+            background-image: 
+                linear-gradient(var(--grid-color) 2px, transparent 2px),
+                linear-gradient(90deg, var(--grid-color) 2px, transparent 2px);
+            background-size: 40px 40px;
+            
+            /* Vignette */
+            mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
         }
 
-        .premium-glass {
-            background: var(--auth-glass-bg);
-            backdrop-filter: blur(40px) saturate(120%);
-            -webkit-backdrop-filter: blur(40px) saturate(120%);
-            border: 1px solid var(--auth-glass-border);
-            box-shadow: var(--auth-glass-shadow);
-            border-radius: 24px;
-            color: var(--text-color);
-        }
+        /* Standard Classes */
+        .glass-panel { background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); }
+        .premium-glass { background: var(--auth-glass-bg); backdrop-filter: blur(40px) saturate(120%); -webkit-backdrop-filter: blur(40px) saturate(120%); border: 1px solid var(--auth-glass-border); box-shadow: var(--auth-glass-shadow); border-radius: 24px; color: var(--text-color); }
 
         .luxury-input { background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-color); }
         .luxury-input:focus { background: var(--input-bg); border-color: var(--text-muted); outline: none; box-shadow: 0 0 0 2px rgba(125, 125, 125, 0.1); }
@@ -307,12 +282,14 @@
             100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
         
-        /* NEW EMPTY STATE STYLING */
+        /* NEW EMPTY STATE STYLING - FORCE VISIBLE */
         .empty-state-box {
-            background: linear-gradient(180deg, rgba(99, 102, 241, 0.05) 0%, rgba(99, 102, 241, 0) 100%);
-            border: 1px dashed var(--text-muted);
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.1) 0%, rgba(99, 102, 241, 0) 100%);
+            border: 2px dashed #6366f1;
             position: relative;
             overflow: hidden;
+            z-index: 50; /* Force it above layers */
+            color: var(--text-color);
         }
         .empty-state-box::after {
             content: '';
@@ -399,10 +376,11 @@
             authenticateUser: async (name, password) => {
                 if (!firestore) return null;
                 try {
-                    const q = query(collection(firestore, 'artifacts', appId, 'public', 'data', 'users'), where("name", "==", name), where("password", "==", password));
-                    const querySnapshot = await getDocs(q);
-                    if (!querySnapshot.empty) { return querySnapshot.docs[0].data(); } 
-                    else { const snap = await getDocs(collection(firestore, 'artifacts', appId, 'public', 'data', 'users')); const users = snap.docs.map(d => d.data()); return users.find(u => u.name.toLowerCase() === name.toLowerCase() && u.password === password); }
+                    // FIX: Perform client-side filtering to avoid index requirements
+                    const snap = await getDocs(collection(firestore, 'artifacts', appId, 'public', 'data', 'users'));
+                    const users = snap.docs.map(d => d.data());
+                    // Use strict comparison after cleaning inputs if needed, but simple == is safer for prototypes
+                    return users.find(u => u.name.toLowerCase() === name.toLowerCase() && u.password === password);
                 } catch(e) { console.error(e); return null; }
             },
             checkHandleExists: async (handle) => {
@@ -564,43 +542,12 @@
                         <h1 className="text-5xl md:text-7xl font-serif mb-6">Trusted.<br/><span className="italic opacity-60">Private. Secure.</span></h1>
                         <p className="text-lg opacity-60 mb-12 max-w-xl mx-auto">Shieldscrow is the premier escrow service for high-value digital assets. Protecting over $50M in volume.</p>
                         <button onClick={() => setView('dashboard')} className="glow-button">Start Transaction</button>
-                        
-                        {/* Original Grid Layout */}
-                        <div className="mt-24 w-full max-w-6xl px-6 pb-24">
-                            <h2 className="text-2xl font-serif mb-10 text-center">How Shieldscrow Works</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                {steps.map((s, i) => (
-                                    <div key={i} className="glass-panel p-8 rounded-xl hover:border-[var(--text-color)] transition duration-500 text-center group">
-                                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 mx-auto bg-current/10 ${s.c} group-hover:scale-110 transition-transform`}><i className={`ph ${s.i} text-2xl`}></i></div>
-                                        <h3 className="font-serif text-lg mb-2">{s.t}</h3>
-                                        <p className="text-xs opacity-60 leading-relaxed">{s.d}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        <div className="mt-24 w-full max-w-6xl px-6 pb-24"><h2 className="text-2xl font-serif mb-10 text-center">How Shieldscrow Works</h2><div className="grid grid-cols-1 md:grid-cols-3 gap-6">{steps.map((s, i) => (<div key={i} className="glass-panel p-8 rounded-xl hover:border-[var(--text-color)] transition duration-500 text-center group"><div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 mx-auto bg-current/10 ${s.c} group-hover:scale-110 transition-transform`}><i className={`ph ${s.i} text-2xl`}></i></div><h3 className="font-serif text-lg mb-2">{s.t}</h3><p className="text-xs opacity-60 leading-relaxed">{s.d}</p></div>))}</div></div>
                     </div>
                     <div className="w-full border-y border-[var(--panel-border)] bg-[var(--glass-bg)] backdrop-blur-sm py-8 mb-16">
-                        <div className="max-w-6xl mx-auto px-6 flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                            <div className="flex items-center gap-2"><i className="ph-fill ph-currency-eth text-2xl"></i><span className="font-bold text-sm">ETHEREUM</span></div>
-                            <div className="flex items-center gap-2"><i className="ph-fill ph-currency-btc text-2xl"></i><span className="font-bold text-sm">BITCOIN</span></div>
-                            <div className="flex items-center gap-2"><i className="ph-bold ph-shield-check text-2xl"></i><span className="font-bold text-sm">CHAINLINK</span></div>
-                            <div className="flex items-center gap-2"><i className="ph-bold ph-polygon text-2xl"></i><span className="font-bold text-sm">POLYGON</span></div>
-                        </div>
+                        <div className="max-w-6xl mx-auto px-6 flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500"><div className="flex items-center gap-2"><i className="ph-fill ph-currency-eth text-2xl"></i><span className="font-bold text-sm">ETHEREUM</span></div><div className="flex items-center gap-2"><i className="ph-fill ph-currency-btc text-2xl"></i><span className="font-bold text-sm">BITCOIN</span></div><div className="flex items-center gap-2"><i className="ph-bold ph-shield-check text-2xl"></i><span className="font-bold text-sm">CHAINLINK</span></div><div className="flex items-center gap-2"><i className="ph-bold ph-polygon text-2xl"></i><span className="font-bold text-sm">POLYGON</span></div></div>
                     </div>
-                    <footer className="border-t border-[var(--panel-border)] bg-[var(--panel-bg)] py-12 mt-auto">
-                        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-                            <div className="flex items-center gap-2 opacity-50">
-                                <div className="w-6 h-6 bg-[var(--text-color)] rounded flex items-center justify-center text-[var(--bg-color)]"><i className="ph-bold ph-shield-check text-xs"></i></div>
-                                <span className="text-sm font-serif">Shieldscrow &copy; 2024</span>
-                            </div>
-                            <div className="flex gap-8">
-                                <a href="#" className="footer-link">Terms</a>
-                                <a href="#" className="footer-link">Privacy</a>
-                                <a href="#" className="footer-link">Smart Contract</a>
-                                <a href="#" className="footer-link">Support</a>
-                            </div>
-                        </div>
-                    </footer>
+                    <footer className="border-t border-[var(--panel-border)] bg-[var(--panel-bg)] py-12 mt-auto"><div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6"><div className="flex items-center gap-2 opacity-50"><div className="w-6 h-6 bg-[var(--text-color)] rounded flex items-center justify-center text-[var(--bg-color)]"><i className="ph-bold ph-shield-check text-xs"></i></div><span className="text-sm font-serif">Shieldscrow &copy; 2024</span></div><div className="flex gap-8"><a href="#" className="footer-link">Terms</a><a href="#" className="footer-link">Privacy</a><a href="#" className="footer-link">Smart Contract</a><a href="#" className="footer-link">Support</a></div></div></footer>
                 </div>
             );
         };
@@ -615,11 +562,9 @@
                 setError('');
                 setIsLoading(true);
                 
-                // FIX: Trim inputs to avoid space errors
                 const trimmedName = formData.name.trim().toLowerCase();
                 const trimmedPassword = formData.password.trim();
 
-                // SECRET ADMIN LOGIN CHECK (Hardcoded for simplicity in this version)
                 if (trimmedName === 'admin' && trimmedPassword === 'admin123') {
                     setTimeout(() => {
                         onAuthSuccess({ name: 'Administrator', role: 'admin', uniqueHandle: '@admin_key', region: 'Global' });
@@ -672,25 +617,22 @@
         const Dashboard = ({ transactions, setView, handleAction, handleChat, currentUser }) => (
             <div className="max-w-6xl mx-auto px-6 mt-12 mb-24 slide-up-enter relative">
                 
-                {/* New Futuristic Background for Dashboard specifically */}
-                <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none opacity-30">
-                     <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-400/20 rounded-full blur-[100px] animate-pulse"></div>
-                     <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-400/20 rounded-full blur-[100px] animate-pulse" style={{animationDelay: '1s'}}></div>
-                </div>
+                {/* New Futuristic Background for Dashboard specifically - FORCED VISIBLE */}
+                <div className="dashboard-bg-layer"></div>
 
                 <LiveActivityTicker />
-                <div className="flex justify-between items-end mb-8">
-                    <h2 className="text-3xl font-serif flex items-center gap-3">My Contracts <span className="w-2 h-2 bg-emerald-400 rounded-full status-pulse"></span></h2>
+                <div className="flex justify-between items-end mb-8 relative z-10">
+                    <h2 className="text-3xl font-serif flex items-center gap-3 text-shadow-glow">My Contracts <span className="w-2 h-2 bg-emerald-400 rounded-full status-pulse"></span></h2>
                     <button onClick={() => setView('create')} className="px-6 py-3 bg-[var(--btn-bg)] text-[var(--btn-text)] rounded-lg text-xs font-bold uppercase hover:opacity-90">+ New</button>
                 </div>
-                <div className="grid gap-4">
+                <div className="grid gap-4 relative z-10">
                     {/* FILTER: Only show transactions where current user is CREATOR or COUNTERPARTY */}
                     {transactions.filter(tx => tx.creatorHandle === currentUser.uniqueHandle || tx.counterpartyHandle === currentUser.uniqueHandle).map(tx => {
                         const isBuyer = currentUser.uniqueHandle === tx.buyerHandle;
                         const isSeller = currentUser.uniqueHandle === tx.sellerHandle;
                         
                         return (
-                        <div key={tx.id} className="cyber-card p-6 flex flex-col md:flex-row justify-between items-center gap-6 relative group">
+                        <div key={tx.id} className="cyber-card-v4 p-6 flex flex-col md:flex-row justify-between items-center gap-6 relative group">
                             {tx.status === 'funded' && <TimerDisplay fundedAt={tx.fundedAt} />}
                             <div className="mt-6 md:mt-0">
                                 <h3 className="text-xl font-serif mb-1">{tx.title}</h3>
@@ -727,10 +669,10 @@
                         </div>
                     )})}
                     {transactions.filter(tx => tx.creatorHandle === currentUser.uniqueHandle || tx.counterpartyHandle === currentUser.uniqueHandle).length === 0 && 
-                    <div className="empty-state-box rounded-xl h-64 flex flex-col items-center justify-center text-center p-8">
-                        <i className="ph ph-file-dashed text-4xl text-[var(--text-muted)] mb-4 opacity-50 animate-bounce"></i>
-                        <h3 className="text-lg font-serif opacity-80">System Standby</h3>
-                        <p className="text-xs text-[var(--text-muted)] mt-2 max-w-xs">Awaiting secure contract initialization. Create a new transaction to begin.</p>
+                    <div className="empty-state-box rounded-xl h-64 flex flex-col items-center justify-center text-center p-8 relative z-10">
+                        <i className="ph ph-scan text-4xl text-[var(--text-muted)] mb-4 opacity-50 animate-pulse"></i>
+                        <h3 className="text-lg font-serif opacity-80">System Scanning...</h3>
+                        <p className="text-xs text-[var(--text-muted)] mt-2 max-w-xs font-mono">No active contracts detected on secure channel.</p>
                     </div>}
                 </div>
             </div>
@@ -740,7 +682,7 @@
         const CreateTransaction = ({ setView, adminWallets, currentUser, showNotification }) => {
             const [step, setStep] = useState(1);
             const [form, setForm] = useState({ 
-                title: '', amount: '', role: '', currency: 'Ethereum (ETH)', 
+                title: '', amount: '', role: 'buyer', currency: 'Ethereum (ETH)', 
                 counterpartyHandle: '', terms: '' 
             });
 
@@ -966,10 +908,7 @@
                         <div className="glass-panel p-8 rounded-lg border border-[var(--panel-border)] overflow-hidden">
                             <div className="flex justify-between mb-6"><h2 className="text-2xl font-serif">User Registry</h2><button onClick={async () => setUsers(await dbHelper.getAllUsers())} className="text-[var(--text-muted)] hover:text-white"><i className="ph ph-arrows-clockwise"></i></button></div>
                             <div className="overflow-y-auto max-h-60">
-                                <table className="w-full text-left text-xs">
-                                    <thead><tr className="text-[var(--text-muted)] border-b border-[var(--panel-border)]"><th className="pb-2 uppercase">User</th><th className="pb-2 uppercase">Handle</th><th className="pb-2 uppercase">Region</th></tr></thead>
-                                    <tbody className="font-mono">{users.map((u, i) => (<tr key={i} className="border-b border-[var(--panel-border)] last:border-0 hover:bg-[var(--input-bg)]"><td className="py-2 font-bold text-[var(--text-color)]">{u.name}</td><td className="py-2 text-emerald-400">{u.uniqueHandle || '-'}</td><td className="py-2 text-[var(--text-muted)]">{u.region}</td></tr>))}{users.length === 0 && <tr><td colSpan="3" className="py-4 text-center text-[var(--text-muted)]">No users found</td></tr>}</tbody>
-                                </table>
+                                <table className="w-full text-left text-xs"><thead><tr className="text-[var(--text-muted)] border-b border-[var(--panel-border)]"><th className="pb-2 uppercase">User</th><th className="pb-2 uppercase">Handle</th><th className="pb-2 uppercase">Region</th></tr></thead><tbody className="font-mono">{users.map((u, i) => (<tr key={i} className="border-b border-[var(--panel-border)] last:border-0 hover:bg-[var(--input-bg)]"><td className="py-2 font-bold text-[var(--text-color)]">{u.name}</td><td className="py-2 text-emerald-400">{u.uniqueHandle || '-'}</td><td className="py-2 text-[var(--text-muted)]">{u.region}</td></tr>))}{users.length === 0 && <tr><td colSpan="3" className="py-4 text-center text-[var(--text-muted)]">No users found</td></tr>}</tbody></table>
                             </div>
                         </div>
                     </div>
@@ -1090,8 +1029,7 @@
         );
 
         const App = () => {
-             /* App logic remains identical */
-             const [view, setView] = useState('auth');
+            const [view, setView] = useState('auth');
             const [user, setUser] = useState(null);
             const [transactions, setTransactions] = useState([]);
             const [adminWallets, setAdminWallets] = useState(DEFAULT_WALLETS);
