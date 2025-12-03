@@ -23,25 +23,24 @@
 
     <style>
         /* LUXURY THEME OVERRIDES */
-        /* DEFAULT IS NOW LIGHT THEME - OPTIMIZED VISIBILITY */
         :root {
             --bg-color: #f8fafc;
             --text-color: #0f172a;
             --text-muted: #64748b;
             
-            /* Glass Card Vars (Light) */
-            --glass-bg: rgba(255, 255, 255, 0.85); /* Opaque for readability */
-            --glass-border: rgba(0, 0, 0, 0.1); /* Darker border for contrast */
+            /* Glass Card Vars */
+            --glass-bg: rgba(255, 255, 255, 0.85); 
+            --glass-border: rgba(0, 0, 0, 0.1); 
             --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
             --glass-blur: blur(24px);
             
-            /* Premium Auth Glass (Light) - Milky & Visible */
+            /* Premium Auth Glass */
             --auth-glass-bg: rgba(255, 255, 255, 0.9); 
             --auth-glass-border: rgba(0, 0, 0, 0.1);
             --auth-glass-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
 
             --input-bg: rgba(255, 255, 255, 0.6);
-            --input-border: rgba(0, 0, 0, 0.2); /* Visible borders */
+            --input-border: rgba(0, 0, 0, 0.2);
             --accent-glow: rgba(0, 0, 0, 0.05);
             
             --btn-bg: #0f172a;
@@ -51,40 +50,33 @@
             --scrollbar-thumb: #ccc;
             --toggle-icon: #0f172a;
             
-            /* Panel Backgrounds for Navbar/Chat */
             --panel-bg: rgba(255, 255, 255, 0.95);
             --panel-border: rgba(0,0,0,0.1);
 
-            /* Ticker Colors (Light) */
             --ticker-bg: rgba(255, 255, 255, 0.9);
             --ticker-border: rgba(15, 23, 42, 0.1);
             --ticker-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
 
-             /* Aurora Gradient Colors (Light) */
             --aurora-1: #ffc4dd; 
             --aurora-2: #c4e0ff;
             --aurora-3: #e8dff5;
 
-            /* Auth Page Specifics (Light) */
             --auth-text: #0f172a;
             --auth-muted: #64748b;
             --auth-btn-bg: #0f172a;
             --auth-btn-text: #ffffff;
         }
 
-        /* DARK THEME OVERRIDES */
         [data-theme="dark"] {
             --bg-color: #050505;
             --text-color: #f5f5f5;
             --text-muted: #a3a3a3;
 
-            /* Glass Card Vars (Dark) */
             --glass-bg: rgba(20, 20, 20, 0.4);
             --glass-border: rgba(255, 255, 255, 0.08);
             --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             --glass-blur: blur(30px);
 
-            /* Premium Auth Glass (Dark) */
             --auth-glass-bg: rgba(255, 255, 255, 0.02);
             --auth-glass-border: rgba(255, 255, 255, 0.1);
             --auth-glass-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
@@ -103,17 +95,14 @@
             --panel-bg: rgba(20, 20, 20, 0.95);
             --panel-border: rgba(255, 255, 255, 0.1);
 
-            /* Ticker Colors (Dark) */
             --ticker-bg: rgba(20, 20, 20, 0.8);
             --ticker-border: rgba(255, 255, 255, 0.1);
             --ticker-shadow: 0 0 20px rgba(99, 102, 241, 0.1);
 
-             /* Aurora Gradient Colors (Dark) */
             --aurora-1: #2e1065; 
             --aurora-2: #0f172a; 
             --aurora-3: #172554;
             
-            /* Auth Page Specifics (Dark) */
             --auth-text: #f5f5f5;
             --auth-muted: #a3a3a3;
             --auth-btn-bg: #ffffff;
@@ -138,12 +127,10 @@
         h1, h2, h3, .serif { font-family: 'Playfair Display', serif; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
         
-        /* Minimal Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
         ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); }
 
-        /* Standard Glass Panel */
         .glass-panel {
             background: var(--glass-bg);
             backdrop-filter: var(--glass-blur);
@@ -152,7 +139,6 @@
             box-shadow: var(--glass-shadow);
         }
 
-        /* THEME-ADAPTIVE PREMIUM GLASS (For Login) */
         .premium-glass {
             background: var(--auth-glass-bg);
             backdrop-filter: blur(40px) saturate(120%);
@@ -163,7 +149,6 @@
             color: var(--text-color);
         }
 
-        /* Elegant Inputs */
         .luxury-input {
             background: var(--input-bg);
             border: 1px solid var(--input-border);
@@ -176,7 +161,6 @@
             box-shadow: 0 0 0 2px rgba(125, 125, 125, 0.1);
         }
         
-        /* Hover Animation for Inputs */
         .luxury-input:hover, .tech-input:hover {
             border-color: var(--text-muted);
             transform: translateY(-1px);
@@ -188,7 +172,6 @@
             background: rgba(239, 68, 68, 0.05);
         }
 
-        /* Input Styles for Auth Card (Adaptive) */
         .tech-input {
             background: var(--input-bg);
             border: 1px solid var(--input-border);
@@ -206,14 +189,12 @@
             opacity: 0.7;
         }
 
-        /* ANIMATIONS */
         .fade-in { animation: fadeIn 0.8s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .modal-enter { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .toast-enter { animation: slideDown 0.4s ease-out forwards; }
         @keyframes slideDown { from { transform: translate(-50%, -100%); opacity: 0; } to { transform: translate(-50%, 20px); opacity: 1; } }
         
-        /* NEW PAGE TRANSITIONS */
         .slide-up-enter {
             animation: slideUpReveal 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             opacity: 0;
@@ -224,7 +205,6 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
-        /* LIVE TICKER ANIMATION */
         .fade-slide-up {
             animation: fadeSlideUp 0.5s ease-out forwards;
         }
@@ -233,17 +213,16 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* CRYPTO BACKGROUND ANIMATION */
         .crypto-bg-container {
             position: fixed; 
             top: 0; left: 0; width: 100%; height: 100%;
             overflow: hidden;
-            z-index: -1; /* Behind everything */
+            z-index: -1; 
             pointer-events: none;
         }
         .crypto-floater {
             position: absolute;
-            bottom: -100px; /* Start further down */
+            bottom: -100px; 
             user-select: none;
             display: flex;
             align-items: center;
@@ -256,19 +235,17 @@
             100% { transform: translateY(-120vh) rotate(20deg); opacity: 0; }
         }
         
-        /* DATA STREAM BACKGROUND (For Auth Page) */
         .data-stream-container {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             overflow: hidden;
             z-index: 0;
-            opacity: 0.5; /* Good visibility */
+            opacity: 0.5; 
         }
         .data-string {
             position: absolute;
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
-            /* Use Main Text Color so it's visible in both Dark (White) and Light (Dark Blue) modes */
             color: var(--text-color); 
             white-space: nowrap;
             user-select: none;
@@ -282,7 +259,6 @@
             100% { transform: translate(var(--mx), var(--my)); opacity: 0; }
         }
 
-        /* AURORA BACKGROUND STYLES */
         .aurora-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -301,7 +277,6 @@
         .blob-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: var(--aurora-2); animation-delay: -5s; }
         .blob-3 { top: 40%; left: 40%; width: 40vw; height: 40vw; background: var(--aurora-3); animation-delay: -10s; }
 
-        /* GLOWING BUTTON WITH HOVER ANIMATION */
         .glow-button {
             border: 1px solid var(--text-color);
             padding: 1em 3em;
@@ -319,7 +294,7 @@
             position: relative;
             width: auto;
             display: inline-block;
-            overflow: hidden; /* For shine effect */
+            overflow: hidden; 
             transition: all 0.3s ease;
         }
         
@@ -352,7 +327,6 @@
         .icon-bounce { animation: gentleBounce 2s infinite; }
         @keyframes gentleBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         
-        /* THEME TOGGLE ANIMATION */
         .theme-toggle-icon {
             transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
@@ -360,7 +334,6 @@
             transform: rotate(180deg) scale(0.8);
         }
 
-        /* COIN TRANSITION STYLES (60FPS Optimized) */
         .coin-transition-container {
             position: fixed;
             top: 0;
@@ -380,7 +353,6 @@
             opacity: 1;
         }
         
-        /* Ensure coin disappears when not animating to avoid glitches */
         .coin-transition-container:not(.animating) {
             display: none;
         }
@@ -391,17 +363,15 @@
         }
 
         .gold-coin {
-            width: 350px; /* Bigger Size */
+            width: 350px; 
             height: 350px;
             background: radial-gradient(ellipse at center, #ffd700 0%, #b8860b 100%);
             border-radius: 50%;
-            box-shadow: 
-                0 0 60px rgba(255, 215, 0, 0.6), 
-                inset 0 0 20px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 160px; /* Bigger Icon */
+            font-size: 160px; 
             color: #74540d;
             border: 8px solid #DAA520;
             will-change: transform;
@@ -415,7 +385,6 @@
             opacity: 0.6;
         }
         
-        /* Slower, smoother animation */
         .animating .coin-mover {
             animation: slideAcross 2.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
         }
@@ -432,7 +401,6 @@
             100% { transform: rotateY(360deg); }
         }
         
-        /* --- HOLOGRAPHIC TICKER STYLES --- */
         .hologram-ticker {
             background: var(--ticker-bg);
             border: 1px solid var(--ticker-border);
@@ -467,11 +435,9 @@
             100% { left: 200%; }
         }
 
-        /* Chat Widget */
         .chat-window-enter { animation: slideUpChat 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes slideUpChat { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* --- NEW STYLES FOR WIZARD & SPOTLIGHT --- */
         .spotlight-card {
             position: relative;
             overflow: hidden;
@@ -507,7 +473,6 @@
             box-shadow: 0 0 10px 2px var(--accent-glow);
         }
         
-        /* FOOTER STYLES */
         .footer-link {
             color: var(--text-muted);
             transition: color 0.3s;
@@ -517,12 +482,20 @@
         }
         .footer-link:hover { color: var(--text-color); }
         
-        /* Mobile-friendly horizontal scroll for How It Works */
         .snap-x-mandatory {
             scroll-snap-type: x mandatory;
         }
         .snap-center {
             scroll-snap-align: center;
+        }
+
+        .status-pulse {
+            animation: statusPulse 2s infinite;
+        }
+        @keyframes statusPulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
     </style>
 
@@ -558,7 +531,6 @@
     <script type="text/babel">
         const { useState, useEffect, useRef, useMemo } = React;
 
-        // Access Firebase modules from the global window object
         const { 
             initializeApp, 
             getAuth, 
@@ -576,9 +548,9 @@
             where
         } = window.FirebaseModules;
 
-        // --- CONFIGURATION ---
-        const AUTO_REFUND_TIME_MS = 2 * 60 * 60 * 1000; // 2 HOURS
+        const AUTO_REFUND_TIME_MS = 2 * 60 * 60 * 1000; 
         
+        // --- IMPORTANT: REPLACE THESE WITH YOUR REAL WALLET ADDRESSES FOR THE PILOT ---
         const DEFAULT_WALLETS = {
             "Ethereum (ETH)": "0x8e705Ee7E8d22538cDbB25C77881994fb722a0fa",
             "Bitcoin (Taproot)": "bc1p44ukqjccnjjrwmc93zcy3rjufylaly2vvt67sgm0xyn0upjsy4hszxrxql",
@@ -587,7 +559,6 @@
             "Polygon (MATIC)": "0x8e705Ee7E8d22538cDbB25C77881994fb722a0fa"
         };
 
-        // --- FIREBASE INIT ---
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         
@@ -600,7 +571,6 @@
             console.warn("Firebase config not found.");
         }
 
-        // --- DATABASE HELPERS (Async) ---
         const dbHelper = {
             registerUser: async (userData) => {
                 if (!firestore) return null;
@@ -618,14 +588,12 @@
             authenticateUser: async (name, password) => {
                 if (!firestore) return null;
                 try {
-                    // Optimized query for exact name/password match
                     const q = query(collection(firestore, 'artifacts', appId, 'public', 'data', 'users'), where("name", "==", name), where("password", "==", password));
                     const querySnapshot = await getDocs(q);
                     
                     if (!querySnapshot.empty) {
                         return querySnapshot.docs[0].data();
                     } else {
-                        // Fallback: Client-side filtering if case sensitivity is an issue (or use lowercase name field)
                          const snap = await getDocs(collection(firestore, 'artifacts', appId, 'public', 'data', 'users'));
                          const users = snap.docs.map(d => d.data());
                          return users.find(u => u.name.toLowerCase() === name.toLowerCase() && u.password === password);
@@ -694,7 +662,6 @@
             );
         };
 
-        // --- NEW CRYPTO BACKGROUND COMPONENT (For Create Page) ---
         const CryptoBackground = () => {
             const symbols = [
                 { val: 'ph-currency-btc', color: '#F7931A' }, // Bitcoin Orange
@@ -735,7 +702,6 @@
             );
         };
 
-        // --- REVERTED: FIXED STRINGS DATA STREAM (Calmer background) ---
         const CryptoDataBackground = () => {
             const strings = [
                 "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
@@ -776,14 +742,12 @@
                             {item.val}
                         </div>
                     ))}
-                    {/* Add some random floating icons for the "random things" feel */}
                     <div className="absolute top-1/4 left-1/4 opacity-10 animate-pulse text-6xl text-[var(--text-color)]"><i className="ph ph-currency-btc"></i></div>
                     <div className="absolute bottom-1/3 right-1/4 opacity-10 animate-bounce text-6xl text-[var(--text-color)]"><i className="ph ph-currency-eth"></i></div>
                 </div>
             );
         };
 
-        // --- AURORA BACKGROUND COMPONENT ---
         const AuroraBackground = () => (
             <div className="aurora-container">
                 <div className="aurora-blob blob-1"></div>
@@ -810,7 +774,6 @@
             );
         };
 
-        // --- LIVE ACTIVITY TICKER COMPONENT (SCRAMBLE EFFECT) ---
         const LiveActivityTicker = () => {
             const [activity, setActivity] = useState(null);
             const [displayedText, setDisplayedText] = useState("");
@@ -909,7 +872,6 @@
             
             return (
                 <div className={`${sizeClasses} relative flex items-center justify-center`}>
-                    {/* Fallback Logo (Code Generated) */}
                     <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-transparent">
                         <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_10px_rgba(255,215,0,0.3)]">
                             <defs>
@@ -1013,7 +975,6 @@
                 if (!firestore) return;
                 const unsubscribe = onSnapshot(collection(firestore, 'artifacts', appId, 'public', 'data', 'messages'), (snapshot) => {
                     const allMsgs = snapshot.docs.map(doc => doc.data());
-                    // Filter in memory as per constraints
                     const txMsgs = allMsgs.filter(m => m.transactionId === tx.id).sort((a, b) => a.timestamp - b.timestamp);
                     setMessages(txMsgs);
                     if(scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -1029,84 +990,42 @@
 
             return (
                 <div className="fixed bottom-20 right-6 w-80 md:w-96 h-[500px] glass-panel border border-[var(--panel-border)] rounded-xl flex flex-col shadow-2xl z-50 chat-window-enter font-sans">
-                    {/* Header with Live Timer */}
                     <div className="p-4 border-b border-[var(--panel-border)] bg-[var(--panel-bg)] flex justify-between items-center">
                         <div>
                             <div className="text-xs font-bold text-[var(--text-color)] uppercase">{tx.title}</div>
-                            {tx.status === 'funded' ? (
-                                <div className="text-[10px] mt-1 flex items-center gap-1">
-                                    <span className="text-[var(--text-muted)]">Auto-Refund In:</span>
-                                    <TimerDisplay fundedAt={tx.fundedAt} isCompact={true} />
-                                </div>
-                            ) : <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wide mt-1">{tx.status}</div>}
+                            {tx.status === 'funded' ? (<div className="text-[10px] mt-1 flex items-center gap-1"><span className="text-[var(--text-muted)]">Auto-Refund In:</span><TimerDisplay fundedAt={tx.fundedAt} isCompact={true} /></div>) : <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wide mt-1">{tx.status}</div>}
                         </div>
                         <button onClick={onClose} className="text-[var(--text-muted)] hover:text-white"><i className="ph ph-x text-lg"></i></button>
                     </div>
-
-                    {/* Messages Area */}
                     <div className="flex-1 overflow-y-auto p-4 space-y-3" ref={scrollRef}>
                         {messages.length === 0 && <div className="text-center text-[var(--text-muted)] text-xs italic mt-10">Secure channel established.<br/>Negotiate delivery details here.</div>}
                         {messages.map((m, i) => {
                             const isMe = m.sender === currentUser.uniqueHandle;
                             return (
                                 <div key={i} className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
-                                    <div className={`max-w-[85%] p-3 rounded-xl text-xs ${isMe ? 'bg-[var(--text-color)] text-[var(--bg-color)]' : 'bg-[var(--input-bg)] text-[var(--text-color)] border border-[var(--panel-border)]'}`}>
-                                        {m.text}
-                                    </div>
+                                    <div className={`max-w-[85%] p-3 rounded-xl text-xs ${isMe ? 'bg-[var(--text-color)] text-[var(--bg-color)]' : 'bg-[var(--input-bg)] text-[var(--text-color)] border border-[var(--panel-border)]'}`}>{m.text}</div>
                                     <div className="text-[9px] text-[var(--text-muted)] mt-1 opacity-50">{m.sender}</div>
                                 </div>
                             )
                         })}
                     </div>
-
-                    {/* Input Area */}
                     <div className="p-3 border-t border-[var(--panel-border)] bg-[var(--panel-bg)] flex gap-2">
-                        <input 
-                            className="flex-1 bg-transparent text-xs text-[var(--text-color)] outline-none placeholder-[var(--text-muted)]" 
-                            placeholder="Type a secure message..."
-                            value={input}
-                            onChange={e => setInput(e.target.value)}
-                            onKeyPress={e => e.key === 'Enter' && send()}
-                        />
+                        <input className="flex-1 bg-transparent text-xs text-[var(--text-color)] outline-none placeholder-[var(--text-muted)]" placeholder="Type a secure message..." value={input} onChange={e => setInput(e.target.value)} onKeyPress={e => e.key === 'Enter' && send()} />
                         <button onClick={send} className="text-[var(--text-color)] hover:text-emerald-400"><i className="ph-fill ph-paper-plane-right text-lg"></i></button>
                     </div>
                 </div>
             );
         };
 
-        // --- CORE MODALS ---
-
         const DepositModal = ({ tx, onClose, adminWallets, setProcessingAction, showNotification }) => {
             const walletAddress = adminWallets[tx.currency] || "Address Not Found";
             const handleCopy = () => {
-                // Fallback copy function defined inside to capture walletAddress
                 const fallbackCopy = () => {
                     try {
-                        const t = document.createElement("textarea");
-                        t.value = walletAddress;
-                        t.style.position = "fixed";
-                        t.style.left = "-9999px";
-                        document.body.appendChild(t);
-                        t.select();
-                        document.execCommand('copy');
-                        document.body.removeChild(t);
-                        showNotification("Address Copied");
-                    } catch (e) {
-                        console.error("Copy failed", e);
-                        showNotification("Copy failed", "error");
-                    }
+                        const t = document.createElement("textarea"); t.value = walletAddress; t.style.position = "fixed"; t.style.left = "-9999px"; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); showNotification("Address Copied");
+                    } catch (e) { console.error("Copy failed", e); showNotification("Copy failed", "error"); }
                 };
-
-                if (navigator.clipboard) { 
-                    navigator.clipboard.writeText(walletAddress)
-                        .then(() => showNotification("Address Copied"))
-                        .catch(err => {
-                            console.warn("Clipboard API failed, using fallback", err);
-                            fallbackCopy();
-                        });
-                } else { 
-                    fallbackCopy(); 
-                }
+                if (navigator.clipboard) { navigator.clipboard.writeText(walletAddress).then(() => showNotification("Address Copied")).catch(err => { console.warn("Clipboard API failed, using fallback", err); fallbackCopy(); }); } else { fallbackCopy(); }
             };
             const handleConfirm = () => {
                 setProcessingAction({ type: 'deposit', text: 'Verifying Blockchain...', status: 'processing' });
@@ -1185,6 +1104,28 @@
                             </div>
                         </div>
                     </div>
+                    <div className="w-full border-y border-[var(--panel-border)] bg-[var(--glass-bg)] backdrop-blur-sm py-8 mb-16">
+                        <div className="max-w-6xl mx-auto px-6 flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                            <div className="flex items-center gap-2"><i className="ph-fill ph-currency-eth text-2xl"></i><span className="font-bold text-sm">ETHEREUM</span></div>
+                            <div className="flex items-center gap-2"><i className="ph-fill ph-currency-btc text-2xl"></i><span className="font-bold text-sm">BITCOIN</span></div>
+                            <div className="flex items-center gap-2"><i className="ph-bold ph-shield-check text-2xl"></i><span className="font-bold text-sm">CHAINLINK</span></div>
+                            <div className="flex items-center gap-2"><i className="ph-bold ph-polygon text-2xl"></i><span className="font-bold text-sm">POLYGON</span></div>
+                        </div>
+                    </div>
+                    <footer className="border-t border-[var(--panel-border)] bg-[var(--panel-bg)] py-12 mt-auto">
+                        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+                            <div className="flex items-center gap-2 opacity-50">
+                                <div className="w-6 h-6 bg-[var(--text-color)] rounded flex items-center justify-center text-[var(--bg-color)]"><i className="ph-bold ph-shield-check text-xs"></i></div>
+                                <span className="text-sm font-serif">Shieldscrow &copy; 2024</span>
+                            </div>
+                            <div className="flex gap-8">
+                                <a href="#" className="footer-link">Terms</a>
+                                <a href="#" className="footer-link">Privacy</a>
+                                <a href="#" className="footer-link">Smart Contract</a>
+                                <a href="#" className="footer-link">Support</a>
+                            </div>
+                        </div>
+                    </footer>
                 </div>
             );
         };
@@ -1277,7 +1218,15 @@
                         const isSeller = currentUser.uniqueHandle === tx.sellerHandle;
                         
                         return (
-                        <div key={tx.id} className="glass-panel p-6 rounded-xl flex flex-col md:flex-row justify-between items-center gap-6 relative group border border-[var(--panel-border)] hover:border-[var(--text-color)] transition-all duration-300">
+                        <div key={tx.id} className="glass-panel p-6 rounded-xl flex flex-col md:flex-row justify-between items-center gap-6 relative group border border-[var(--panel-border)] hover:border-[var(--text-color)] transition-all duration-300 spotlight-card"
+                             onMouseMove={(e) => {
+                                const rect = e.currentTarget.getBoundingClientRect();
+                                const x = e.clientX - rect.left;
+                                const y = e.clientY - rect.top;
+                                e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
+                                e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
+                            }}
+                        >
                             {tx.status === 'funded' && <TimerDisplay fundedAt={tx.fundedAt} />}
                             <div className="mt-6 md:mt-0">
                                 <h3 className="text-xl font-serif mb-1">{tx.title}</h3>
@@ -1285,7 +1234,7 @@
                                     {tx.amount} {tx.currency} • <span className={tx.status === 'funded' ? 'text-orange-400 font-bold ml-1' : (tx.status === 'refunded' ? 'text-red-400 ml-1' : 'ml-1')}>{tx.status}</span>
                                 </div>
                                 <div className="text-[10px] text-[var(--text-muted)] mt-1 font-bold">
-                                    {isBuyer ? <span className="text-emerald-400">YOU ARE BUYER</span> : <span className="text-blue-400">YOU ARE SELLER</span>}
+                                    {isBuyer ? <span className="text-emerald-400 status-pulse">YOU ARE BUYER</span> : <span className="text-blue-400 status-pulse">YOU ARE SELLER</span>}
                                 </div>
                                 <div className="text-[10px] text-[var(--text-muted)] mt-1">
                                     With: {tx.creatorHandle === currentUser.uniqueHandle ? tx.counterpartyHandle : tx.creatorHandle}
@@ -1383,8 +1332,9 @@
                 <>
                     <CryptoBackground />
                     <div className="max-w-2xl mx-auto mt-12 px-6 fade-in mb-24 relative z-10">
+                        {/* HEADER UPDATED TO MATCH DASHBOARD LAYOUT */}
                         <div className="flex justify-between items-end mb-8">
-                            <h2 className="text-2xl font-serif">New Transaction</h2>
+                            <h2 className="text-3xl font-serif">New Transaction</h2>
                             <button onClick={() => setView('dashboard')} className="text-xs font-bold uppercase flex items-center gap-2 text-[var(--text-muted)] hover:text-[var(--text-color)] transition-colors">
                                 Cancel <i className="ph-bold ph-x"></i>
                             </button>
